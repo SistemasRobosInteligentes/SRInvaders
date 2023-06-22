@@ -1,7 +1,3 @@
-#chicken invaders
-#import pygame
-import pygame, sys
-import pygame_menu
 #import obstacle
 from random import choice, randint
 
