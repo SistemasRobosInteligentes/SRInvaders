@@ -218,9 +218,33 @@ class Game:
             for alien in self.aliens.sprites():
                 alien.rect.y += distance
 
+    def get_all_X(self):
+        all_aliens = self.aliens.sprites()
+        X = []
+        for alien in all_aliens:
+            if alien.rect.x not in X:
+                X.append(alien.rect.x)
+        return X
+    
     def alien_shoot(self):
-        if self.aliens.sprites():
-            random_alien = choice(self.aliens.sprites())
+        columns = self.get_all_X()
+        all_aliens = self.aliens.sprites()
+        bottom_aliens = []
+
+        sublists = [[alien for alien in all_aliens if alien.rect.x == col] for col in columns]
+        #print(sublists)
+        for sublist in sublists: 
+            #print(sublist)
+            #print()
+            sublist.sort(reverse = True, key=get_y)
+            bottom_aliens.append(sublist[0])
+            #print(sublist[0])
+            
+        
+        #bottom_aliens = [sublist.sort(reverse = True, key=get_x)[0] for sublist in sublists]
+        
+        if bottom_aliens:
+            random_alien = choice(bottom_aliens)
             laser_sprite = Laser(random_alien.rect.center,self.alien_lasers_speed,self.screen_height + self.camera_height)
 
             laser_sprite.image = pygame.transform.flip(laser_sprite.image, False, True)
@@ -452,3 +476,6 @@ class Game:
         self.victory_message()
         self.lose_message()
         self.leaderboardSave()
+
+def get_y(alien):
+    return alien.rect.y
