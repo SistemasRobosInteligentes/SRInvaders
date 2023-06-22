@@ -169,24 +169,24 @@ class Game:
                 x = col_index * x_distance + x_offset
                 y = row_index * (y_distance) + y_offset + self.camera_height
                 if(self.difficulty == 0):
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/chicken.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/pig.png")
-                    else: alien_sprite = Alien('red',x,y,"Images/sheep.png")
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/chicken.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/pig.png")
+                    else: alien_sprite = Alien('tier1',x,y,"Images/sheep.png")
                     self.aliens.add(alien_sprite)
                 elif(self.difficulty == 1):
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/zombie.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/spider.png")
-                    else: alien_sprite = Alien('red',x,y,"Images/slime.png")
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/zombie.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/spider.png")
+                    else: alien_sprite = Alien('tier1',x,y,"Images/slime.png")
                     self.aliens.add(alien_sprite)
                 elif(self.difficulty == 2):
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/blaze.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/skeleton.png")
-                    else: alien_sprite = Alien('red',x,y,"Images/creeper.png")
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/blaze.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/skeleton.png")
+                    else: alien_sprite = Alien('tier1',x,y,"Images/creeper.png")
                     self.aliens.add(alien_sprite)
                 else:
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/sheep.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/pig.png")
-                    else: alien_sprite = Alien('red',x,y,"Images/chicken.png")
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/sheep.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/pig.png")
+                    else: alien_sprite = Alien('tier1',x,y,"Images/chicken.png")
                     self.aliens.add(alien_sprite)
 
     def alien_position_checker(self):
@@ -244,16 +244,20 @@ class Game:
                     
 
                 # alien collisions
-                aliens_hit = pygame.sprite.spritecollide(laser,self.aliens,True)
+                aliens_hit = pygame.sprite.spritecollide(laser,self.aliens,False)
                 if aliens_hit:
                     for alien in aliens_hit:
-                        self.score += alien.value
-                        if alien.value == 100:
-                            self.tier1_sound.play()
-                        elif alien.value == 200:
-                            self.tier2_sound.play()
-                        else:
-                            self.tier3_sound.play()
+                        #check for kill
+                        alien.life = alien.life - 1
+                        if(alien.life == 0):
+                            self.score += alien.value
+                            if alien.value == 100:
+                                self.tier1_sound.play()
+                            elif alien.value == 200:
+                                self.tier2_sound.play()
+                            else:
+                                self.tier3_sound.play()
+                            alien.kill()
                     laser.kill()
 
                     Rnum = randint(0,100)
