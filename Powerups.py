@@ -8,13 +8,13 @@ class Powerups(pygame.sprite.Sprite):
         self.random_value = randint(0,2)
         if(self.random_value == 0):
             self.name = "plus_1_life"
-            self.image = pygame.image.load("golden_apple.png").convert_alpha()
+            self.image = pygame.image.load("Images/golden_apple.png").convert_alpha()
         elif(self.random_value == 1):
             self.name = "plus_1_arrow"
-            self.image = pygame.image.load("strength_potion.png")
+            self.image = pygame.image.load("Images/strength_potion.png")
         elif(self.random_value == 2):
             self.name = "slow_alien_lasers"
-            self.image = pygame.image.load("slow_falling_potion.png")
+            self.image = pygame.image.load("Images/slow_falling_potion.png")
         self.speed = speed
         self.rect = self.image.get_rect(center = pos)
         self.height_y_constraint = screen_height   

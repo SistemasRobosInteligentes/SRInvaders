@@ -49,7 +49,7 @@ class Game:
 
         # health and score setup
         self.lives = 3
-        self.live_surf = pygame.image.load('heart.png').convert_alpha()
+        self.live_surf = pygame.image.load('Images/heart.png').convert_alpha()
         self.live_x_start_pos = screen_width/2 - 16
         self.score = 0
         self.font = pygame.font.Font('Pixeled.ttf',20)
@@ -87,58 +87,58 @@ class Game:
         self.extra_spawn_time = randint(40,80)
 
         # Audio
-        self.game_music = pygame.mixer.Sound('otherside.wav')
+        self.game_music = pygame.mixer.Sound('Sounds/otherside.wav')
         self.game_music.set_volume(0.1)
         self.game_music.play(loops = -1)
 
-        self.eat_sound = pygame.mixer.Sound('minecraft_eating_sound_effect.wav')
+        self.eat_sound = pygame.mixer.Sound('Sounds/minecraft_eating_sound_effect.wav')
         self.eat_sound.set_volume(0.3)
-        self.drink_sound = pygame.mixer.Sound('minecraft_drinking_sound_effect.wav')
+        self.drink_sound = pygame.mixer.Sound('Sounds/minecraft_drinking_sound_effect.wav')
         self.drink_sound.set_volume(0.3)
 
-        self.laser_sound = pygame.mixer.Sound('bow.wav')
+        self.laser_sound = pygame.mixer.Sound('Sounds/bow.wav')
         self.laser_sound.set_volume(0.08)
         if(self.difficulty == 0):
-            self.tier3_sound = pygame.mixer.Sound('chicken_death.wav')
+            self.tier3_sound = pygame.mixer.Sound('Sounds/chicken_death.wav')
             self.tier3_sound.set_volume(0.3)
             
-            self.tier2_sound = pygame.mixer.Sound('pig_death.wav')
+            self.tier2_sound = pygame.mixer.Sound('Sounds/pig_death.wav')
             self.tier2_sound.set_volume(0.3)
             
-            self.tier1_sound = pygame.mixer.Sound('sheep_death.wav')
+            self.tier1_sound = pygame.mixer.Sound('Sounds/sheep_death.wav')
             self.tier1_sound.set_volume(0.3)
         elif(self.difficulty == 1):
-            self.tier3_sound = pygame.mixer.Sound('zombie_death.wav')
+            self.tier3_sound = pygame.mixer.Sound('Sounds/zombie_death.wav')
             self.tier3_sound.set_volume(0.3)
             
-            self.tier2_sound = pygame.mixer.Sound('spider_death.wav')
+            self.tier2_sound = pygame.mixer.Sound('Sounds/spider_death.wav')
             self.tier2_sound.set_volume(0.3)
             
-            self.tier1_sound = pygame.mixer.Sound('slime_death.wav')
+            self.tier1_sound = pygame.mixer.Sound('Sounds/slime_death.wav')
             self.tier1_sound.set_volume(0.3)
         elif(self.difficulty == 2):
-            self.tier3_sound = pygame.mixer.Sound('blaze_death.wav')
+            self.tier3_sound = pygame.mixer.Sound('Sounds/blaze_death.wav')
             self.tier3_sound.set_volume(0.3)
             
-            self.tier2_sound = pygame.mixer.Sound('skeleton_death.wav')
+            self.tier2_sound = pygame.mixer.Sound('Sounds/skeleton_death.wav')
             self.tier2_sound.set_volume(0.3)
             
-            self.tier1_sound = pygame.mixer.Sound('creeper_death.wav')
+            self.tier1_sound = pygame.mixer.Sound('Sounds/creeper_death.wav')
             self.tier1_sound.set_volume(0.3)
         else:
-            self.tier3_sound = pygame.mixer.Sound('chicken_death.wav')
+            self.tier3_sound = pygame.mixer.Sound('Sounds/chicken_death.wav')
             self.tier3_sound.set_volume(0.3)
             
-            self.tier2_sound = pygame.mixer.Sound('pig_death.wav')
+            self.tier2_sound = pygame.mixer.Sound('Sounds/pig_death.wav')
             self.tier2_sound.set_volume(0.3)
             
-            self.tier1_sound = pygame.mixer.Sound('sheep_death.wav')
+            self.tier1_sound = pygame.mixer.Sound('Sounds/sheep_death.wav')
             self.tier1_sound.set_volume(0.3)
 
-        self.player_hurt = pygame.mixer.Sound('steve_hurt.wav')
+        self.player_hurt = pygame.mixer.Sound('Sounds/steve_hurt.wav')
         self.player_hurt.set_volume(0.3)
         
-        self.dragon_sound = pygame.mixer.Sound('dragon_death.wav')
+        self.dragon_sound = pygame.mixer.Sound('Sounds/dragon_death.wav')
         self.dragon_sound.set_volume(0.3)
 
     def create_obstacle(self, x_start, y_start,offset_x):
@@ -169,24 +169,24 @@ class Game:
                 x = col_index * x_distance + x_offset
                 y = row_index * (y_distance) + y_offset + self.camera_height
                 if(self.difficulty == 0):
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"chicken.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"pig.png")
-                    else: alien_sprite = Alien('red',x,y,"sheep.png")
+                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/chicken.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/pig.png")
+                    else: alien_sprite = Alien('red',x,y,"Images/sheep.png")
                     self.aliens.add(alien_sprite)
                 elif(self.difficulty == 1):
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"zombie.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"spider.png")
-                    else: alien_sprite = Alien('red',x,y,"slime.png")
+                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/zombie.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/spider.png")
+                    else: alien_sprite = Alien('red',x,y,"Images/slime.png")
                     self.aliens.add(alien_sprite)
                 elif(self.difficulty == 2):
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"blaze.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"skeleton.png")
-                    else: alien_sprite = Alien('red',x,y,"creeper.png")
+                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/blaze.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/skeleton.png")
+                    else: alien_sprite = Alien('red',x,y,"Images/creeper.png")
                     self.aliens.add(alien_sprite)
                 else:
-                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"sheep.png")
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"pig.png")
-                    else: alien_sprite = Alien('red',x,y,"chicken.png")
+                    if row_index == 0: alien_sprite = Alien('yellow',x,y,"Images/sheep.png")
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('green',x,y,"Images/pig.png")
+                    else: alien_sprite = Alien('red',x,y,"Images/chicken.png")
                     self.aliens.add(alien_sprite)
 
     def alien_position_checker(self):

@@ -88,13 +88,13 @@ def gameRun(menu_options):
     
     #Instruction page
     instruction_page_1 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
-    instruction_page_1.add.image("instruction_image_1.png")
+    instruction_page_1.add.image("Images/instruction_image_1.png")
     instruction_page_2 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
-    instruction_page_2.add.image("instruction_image_2.png")
+    instruction_page_2.add.image("Images/instruction_image_2.png")
     instruction_page_3 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
-    instruction_page_3.add.image("instruction_image_3.png")
+    instruction_page_3.add.image("Images/instruction_image_3.png")
     instruction_page_4 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
-    instruction_page_4.add.image("instruction_image_4.png")
+    instruction_page_4.add.image("Images/instruction_image_4.png")
 
     for i in range(1,3):
         
@@ -158,7 +158,7 @@ def gameRun(menu_options):
 def showEasyLeaderboard(leaderboard_menu):
     menu_options.menu_click.play()
     # Connect to the database
-    conn = sqlite3.connect('MineInvader_Leaderboard.db')
+    conn = sqlite3.connect('Database/MineInvader_Leaderboard.db')
 
     # Create a cursor object
     c = conn.cursor()
@@ -195,7 +195,7 @@ def showEasyLeaderboard(leaderboard_menu):
 def showMediumLeaderboard(leaderboard_menu):
     menu_options.menu_click.play()
     # Connect to the database
-    conn = sqlite3.connect('MineInvader_Leaderboard.db')
+    conn = sqlite3.connect('Database/MineInvader_Leaderboard.db')
 
     # Create a cursor object
     c = conn.cursor()
@@ -231,7 +231,7 @@ def showMediumLeaderboard(leaderboard_menu):
 def showHardLeaderboard(leaderboard_menu):
     menu_options.menu_click.play()
     # Connect to the database
-    conn = sqlite3.connect('MineInvader_Leaderboard.db')
+    conn = sqlite3.connect('Database/MineInvader_Leaderboard.db')
 
     # Create a cursor object
     c = conn.cursor()
@@ -287,7 +287,7 @@ if __name__ == '__main__':
     pygame.init()
 
     #Theme Creation
-    background_image = pygame_menu.BaseImage(image_path="minecraft_background.png")
+    background_image = pygame_menu.BaseImage(image_path="Images/minecraft_background.png")
     font = pygame_menu.font.FONT_8BIT
     mine_invader_theme = pygame_menu.Theme(background_color = background_image,
                                            widget_font = font,
