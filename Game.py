@@ -44,7 +44,7 @@ class Game:
         #Victory conditions
         self.lost = False     
         self.won = False
-        self.leaderboard_path = "MineInvader_Leaderboard.db"
+        self.leaderboard_path = "Database/MineInvader_Leaderboard.db"
         self.leaderboard_to_save = True
 
         # health and score setup
@@ -52,7 +52,7 @@ class Game:
         self.live_surf = pygame.image.load('Images/heart.png').convert_alpha()
         self.live_x_start_pos = screen_width/2 - 16
         self.score = 0
-        self.font = pygame.font.Font('Pixeled.ttf',20)
+        self.font = pygame.font.Font('Font/Pixeled.ttf',20)
         
         # Obstacle setup
         self.shape = shape
