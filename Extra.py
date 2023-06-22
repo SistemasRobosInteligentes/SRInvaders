@@ -1,6 +1,4 @@
-import pygame, sys
-from random import choice, randint
-from threading import Thread, Event
+import pygame
 
 class Extra(pygame.sprite.Sprite):
     def __init__(self,side,screen_width,camera_height):

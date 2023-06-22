@@ -7,13 +7,13 @@ from random import choice, randint
 #packages for computer vision
 import cv2
 import sqlite3
-from threading import Thread, Event
+from threading import Thread
 import time
 
 #SELF MADE CODE IMPORTS
-import Game
-import human_user
-import menuOptions
+from Game import Game
+from human_user import human_user
+from menuOptions import menuOptions
 
 
 

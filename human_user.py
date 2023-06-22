@@ -1,15 +1,7 @@
-#import obstacle
-from random import choice, randint
-
 #packages for computer vision
 import cv2
 import mediapipe as mp
-
 import math
-import sqlite3
-from threading import Thread, Event
-import time
-
 from screeninfo import get_monitors
 
 

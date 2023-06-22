@@ -1,9 +1,7 @@
-import pygame, sys
-from random import choice, randint
-from threading import Thread, Event
+import pygame
 
 #SELF MADE CODE IMPORTS
-import Laser
+from Laser import Laser
 
 
 class Player(pygame.sprite.Sprite):

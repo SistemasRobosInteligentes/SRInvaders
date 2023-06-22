@@ -1,18 +1,18 @@
 #chicken invaders
 #import pygame
-import pygame, sys
+import pygame
 from random import choice, randint
 import sqlite3
-from threading import Thread, Event
+from threading import Thread
 import time
 
 #SELF MADE CODE IMPORTS
-import Alien
-import Block
-import Extra
-import Laser
-import Player
-import Powerups
+from Alien import Alien
+from Block import Block
+from Extra import Extra
+from Laser import Laser
+from Player import Player
+from Powerups import Powerups
 
 shape = [
 '  xxxxxxx',

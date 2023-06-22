@@ -1,6 +1,4 @@
-import pygame, sys
-from random import choice, randint
-from threading import Thread, Event
+import pygame
         
 class Laser(pygame.sprite.Sprite):
     def __init__(self,pos,speed,screen_height):
