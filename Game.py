@@ -56,7 +56,7 @@ class Game:
         
         # Obstacle setup
         self.shape = shape
-        self.block_size = 6
+        self.block_size = 8
         self.blocks = pygame.sprite.Group()
         self.obstacle_amount = 4
         self.obstacle_x_positions = [num * (screen_width / self.obstacle_amount) for num in range(self.obstacle_amount)]

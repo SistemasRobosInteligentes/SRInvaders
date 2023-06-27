@@ -3,7 +3,7 @@ import pygame
 class Laser(pygame.sprite.Sprite):
     def __init__(self,pos,speed,screen_height):
         super().__init__()
-        self.image = pygame.Surface((4,20))
+        """self.image = pygame.Surface((4,20))
         arrow_shape = [
         'sggs',
         'sggs',
@@ -37,7 +37,8 @@ class Laser(pygame.sprite.Sprite):
                 color = COLORS[arrow_shape[i][j]]
                 rect = pygame.Rect(j, i, 1, 1)
                 pygame.draw.rect(self.image, color, rect)
-        
+        """
+        self.image = pygame.image.load('Images/arrow.png').convert_alpha()
         self.rect = self.image.get_rect(center = pos)
         self.speed = speed
         self.height_y_constraint = screen_height    
