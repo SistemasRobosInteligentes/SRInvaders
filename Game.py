@@ -241,9 +241,11 @@ class Game:
             bottom_aliens.append(sublist[0])
 
         #Chance to shoot
-        shooting_chance = round(0.0071*number_aliens + 0.659,2)
+        shooting_chance = round(-0.0069*number_aliens + 1,2)
         rd_number = random()
+        print(shooting_chance,rd_number)
         if bottom_aliens and shooting_chance > rd_number:
+            print("SHOT")
             #Choose the alien to shoot, using a gaussian
             alien_pos_x = [0]
             player_pos_x = self.player.sprite.rect.center[0]/self.screen_width
