@@ -1,7 +1,7 @@
 #chicken invaders
 #import pygame
 import pygame
-from random import choice, randint
+from random import choice, randint, random
 import sqlite3
 from threading import Thread
 import time
@@ -231,6 +231,7 @@ class Game:
     def alien_shoot(self):
         columns = self.get_all_X()
         all_aliens = self.aliens.sprites()
+        number_aliens = len(all_aliens)
         bottom_aliens = []
 
         sublists = [[alien for alien in all_aliens if alien.rect.x == col] for col in columns]
@@ -238,8 +239,11 @@ class Game:
         for sublist in sublists: 
             sublist.sort(reverse = True, key=get_y)
             bottom_aliens.append(sublist[0])
-        
-        if bottom_aliens:
+
+        #Chance to shoot
+        shooting_chance = round(0.0071*number_aliens + 0.659,2)
+        rd_number = random()
+        if bottom_aliens and shooting_chance > rd_number:
             #Choose the alien to shoot, using a gaussian
             alien_pos_x = [0]
             player_pos_x = self.player.sprite.rect.center[0]/self.screen_width
