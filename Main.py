@@ -81,7 +81,7 @@ def gameRun(menu_options):
     
     #camera_height_eff = camera_height - 2*rows_to_ignore
 
-    screen = pygame.display.set_mode((screen_width,screen_height+camera_height),pygame.FULLSCREEN,pygame.SCALED)
+    screen = pygame.display.set_mode((screen_width,screen_height+camera_height))
     clock = pygame.time.Clock()
     
     player_user.camera_on = True
@@ -304,7 +304,7 @@ if __name__ == '__main__':
     #print(monitor_height)
     total_height = monitor_height - 100
     
-    screen = pygame.display.set_mode((screen_width,total_height),pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((screen_width,total_height))
     
     menu_inicial = pygame_menu.Menu('MineInvaders',screen_width,total_height,theme=mine_invader_theme)
 

@@ -241,8 +241,18 @@ class Game:
         
         if bottom_aliens:
             #Choose the alien to shoot, using a gaussian
-            print(self.player.sprite.rect.center[0]/self.screen_width)
-            distribution = np.random.normal(self.player.sprite.rect.center[0]/self.screen_width,1)
+            alien_pos_x = [0]
+            player_pos_x = self.player.sprite.rect.center[0]/self.screen_width
+            player_pos_section = 0
+            for alien in bottom_aliens:
+                alien_pos_x.append(alien.rect.center[0]/self.screen_width)
+
+            alien_pos_x.append(1)
+            for section in range(0,len(alien_pos_x)-1):
+                if(player_pos_x >= alien_pos_x[section] and player_pos_x < alien_pos_x[section + 1]):
+                    player_pos_section = section        
+            
+            distribution = np.random.normal(player_pos_section,1)
             clipped_distribution = np.clip(distribution,0,len(bottom_aliens) - 1)
             random_choice = int(round(clipped_distribution))
             random_alien = bottom_aliens[random_choice]
