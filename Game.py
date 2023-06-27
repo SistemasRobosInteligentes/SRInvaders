@@ -5,6 +5,8 @@ from random import choice, randint
 import sqlite3
 from threading import Thread
 import time
+import numpy as np
+
 
 #SELF MADE CODE IMPORTS
 from Alien import Alien
@@ -232,19 +234,18 @@ class Game:
         bottom_aliens = []
 
         sublists = [[alien for alien in all_aliens if alien.rect.x == col] for col in columns]
-        #print(sublists)
+
         for sublist in sublists: 
-            #print(sublist)
-            #print()
             sublist.sort(reverse = True, key=get_y)
             bottom_aliens.append(sublist[0])
-            #print(sublist[0])
-            
-        
-        #bottom_aliens = [sublist.sort(reverse = True, key=get_x)[0] for sublist in sublists]
         
         if bottom_aliens:
-            random_alien = choice(bottom_aliens)
+            #Choose the alien to shoot, using a gaussian
+            print(self.player.sprite.rect.center[0]/self.screen_width)
+            distribution = np.random.normal(self.player.sprite.rect.center[0]/self.screen_width,1)
+            clipped_distribution = np.clip(distribution,0,len(bottom_aliens) - 1)
+            random_choice = int(round(clipped_distribution))
+            random_alien = bottom_aliens[random_choice]
             laser_sprite = Laser(random_alien.rect.center,self.alien_lasers_speed,self.screen_height + self.camera_height)
 
             laser_sprite.image = pygame.transform.flip(laser_sprite.image, False, True)
