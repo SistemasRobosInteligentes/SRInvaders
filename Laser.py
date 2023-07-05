@@ -47,5 +47,5 @@ class Laser(pygame.sprite.Sprite):
             self.kill()
 
     def update(self):
-        self.rect.y += self.speed
+        self.rect.y += round(self.speed*self.height_y_constraint/1080)
         self.destroy()

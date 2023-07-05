@@ -20,26 +20,14 @@ from menuOptions import menuOptions
 
 from screeninfo import get_monitors
 
-def gameRun(menu_options):
+def gameRun(menu_options, monitor_height, monitor_width, screen):
     menu_options.menu_music.stop()
     menu_options.menu_click.play()
-    screen_width = 700
     
-   
-    
-    all_monitor_height = []
-    for m in get_monitors():
-        all_monitor_height.append(m.height)
-        
-    monitor_height= max(all_monitor_height)
+    #screen_width = 700
     
     
-    #camera_height = 450
-    
-
-    
-
-    player_user = human_user(screen_width)
+    player_user = human_user(monitor_width)
     
     
     cap = cv2.VideoCapture(0)
@@ -49,7 +37,7 @@ def gameRun(menu_options):
     
     time.sleep(2)       
     
-
+    
     #MUDAR AQUI A FREQUENCIA DOS LASERS DOS ALIENS
     if(menu_options.difficulty == 0):
         ALIENLASER = pygame.USEREVENT + 1
@@ -64,36 +52,26 @@ def gameRun(menu_options):
         ALIENLASER = pygame.USEREVENT + 1
         pygame.time.set_timer(ALIENLASER,800)
     
-    camera_height = 1/4 * monitor_height
-    
-    camera_width = camera_height*player_user.camera_width/player_user.camera_height
-    
-    player_user.camera_height = camera_height
-    player_user.camera_width = camera_width
+    camera_height = 0
     
     
-    screen_height = monitor_height - 100 - camera_height
-    
-    
-    #rows_to_ignore = round(player_user.camera_height*0.05)
+    #player_user.camera_height = camera_height
+    #player_user.camera_width = camera_width
     
     
     
-    #camera_height_eff = camera_height - 2*rows_to_ignore
-
-    screen = pygame.display.set_mode((screen_width,screen_height+camera_height),pygame.FULLSCREEN,pygame.SCALED)
     clock = pygame.time.Clock()
     
     player_user.camera_on = True
     
     #Instruction page
-    instruction_page_1 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
+    instruction_page_1 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
     instruction_page_1.add.image("Images/instruction_image_1.png")
-    instruction_page_2 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
+    instruction_page_2 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
     instruction_page_2.add.image("Images/instruction_image_2.png")
-    instruction_page_3 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
+    instruction_page_3 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
     instruction_page_3.add.image("Images/instruction_image_3.png")
-    instruction_page_4 = pygame_menu.Menu('Loading...', screen_width,total_height,theme=mine_invader_theme)
+    instruction_page_4 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
     instruction_page_4.add.image("Images/instruction_image_4.png")
 
     for i in range(1,3):
@@ -110,7 +88,7 @@ def gameRun(menu_options):
         instruction_page_4.mainloop(screen,disable_loop = True)
         time.sleep(1.75)
 
-    game = Game(screen,screen_width,screen_height,camera_height,menu_options.name,menu_options.difficulty)
+    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty)
     
     
     
@@ -119,7 +97,7 @@ def gameRun(menu_options):
 
            if keys[pygame.K_r]:
              cap.release()
-             gameRun(menu_options)
+             gameRun(menu_options, monitor_height,monitor_width, screen)
              
            elif keys[pygame.K_m]:
              cap.release()
@@ -145,7 +123,7 @@ def gameRun(menu_options):
            camera_image_surface = pygame.surfarray.make_surface(cv2.cvtColor(player_user.image_mat, cv2.COLOR_BGR2RGB))
             
            camera_image_surface_rotated = pygame.transform.rotate(camera_image_surface,270)
-           screen.blit(camera_image_surface_rotated,((screen_width-camera_width)/2,0))
+           #screen.blit(camera_image_surface_rotated,((screen_width-camera_width)/2,0))
 
 
 
@@ -177,7 +155,7 @@ def showEasyLeaderboard(leaderboard_menu):
     conn.close()
 
     # Create a new menu to display the leaderboard
-    leaderboard_easy_menu = pygame_menu.Menu('Leaderboard Easy', screen_width, total_height, theme=mine_invader_theme)
+    leaderboard_easy_menu = pygame_menu.Menu('Leaderboard Easy', monitor_width, total_height, theme=mine_invader_theme)
 
     # Add the top scores for each difficulty level to the menu
     leaderboard_easy_menu.add.label('Easy Scores:')
@@ -214,7 +192,7 @@ def showMediumLeaderboard(leaderboard_menu):
     conn.close()
 
     # Create a new menu to display the leaderboard
-    leaderboard_medium_menu = pygame_menu.Menu('Leaderboard Medium', screen_width, total_height, theme=mine_invader_theme)
+    leaderboard_medium_menu = pygame_menu.Menu('Leaderboard Medium', monitor_width, total_height, theme=mine_invader_theme)
 
     # Add the top scores for each difficulty level to the menu
     leaderboard_medium_menu.add.label('Medium Scores:')
@@ -250,7 +228,7 @@ def showHardLeaderboard(leaderboard_menu):
     conn.close()
 
     # Create a new menu to display the leaderboard
-    leaderboard_hard_menu = pygame_menu.Menu('Leaderboard Hard', screen_width, total_height, theme=mine_invader_theme)
+    leaderboard_hard_menu = pygame_menu.Menu('Leaderboard Hard', monitor_width, total_height, theme=mine_invader_theme)
 
     # Add the top scores for each difficulty level to the menu
     leaderboard_hard_menu.add.label('Hard Scores:')
@@ -267,7 +245,7 @@ def showHardLeaderboard(leaderboard_menu):
 def showLeaderboard():
     menu_options.menu_click.play()
     # Create a new menu to display the leaderboard
-    leaderboard_menu = pygame_menu.Menu('Leaderboard', screen_width, total_height, theme=mine_invader_theme)
+    leaderboard_menu = pygame_menu.Menu('Leaderboard', monitor_width, total_height, theme=mine_invader_theme)
 
     # Add buttons for Easy, Medium, Hard menus
     leaderboard_menu.add.button('Easy', showEasyLeaderboard,leaderboard_menu,accept_kwargs=True)
@@ -294,25 +272,37 @@ if __name__ == '__main__':
                                            widget_font_color = (0,0,0))
 
 
-    screen_width = 700
+    
     
     all_monitor_height = []
+    all_monitor_width = []
+    
     for m in get_monitors():
         all_monitor_height.append(m.height)
+        all_monitor_width.append(m.width)
         
     monitor_height= max(all_monitor_height)
+    monitor_width= max(all_monitor_width)
+    
+    print(monitor_height)
+    print(monitor_width)
+    
+    #camera_height = 450
+    
+    
+    
     #print(monitor_height)
-    total_height = monitor_height - 100
+    total_height = monitor_height
     
-    screen = pygame.display.set_mode((screen_width,total_height),pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((monitor_width,total_height),pygame.FULLSCREEN, pygame.SCALED)
     
-    menu_inicial = pygame_menu.Menu('MineInvaders',screen_width,total_height,theme=mine_invader_theme)
+    menu_inicial = pygame_menu.Menu('MineInvaders',monitor_width,total_height,theme=mine_invader_theme)
 
     menu_options = menuOptions()
 
-    menu_inicial.add.text_input('Name: ', default='Steve',onchange=menu_options.setName)
-    menu_inicial.add.selector('Difficulty :', [('Easy', 0), ('Medium', 1),('Hard',2)], onchange=menu_options.setDifficulty)
-    menu_inicial.add.button('Play', gameRun,menu_options,accept_kwargs=True)
+    menu_inicial.add.text_input('Name  : ', default='Steve',onchange=menu_options.setName)
+    menu_inicial.add.selector('Difficulty  ', [('Easy', 0), ('Medium', 1),('Hard',2)], onchange=menu_options.setDifficulty)
+    menu_inicial.add.button('Play', gameRun,menu_options,monitor_height,monitor_width,screen,accept_kwargs=True)
     menu_inicial.add.button('Leaderboard', showLeaderboard)
     menu_inicial.add.button('Quit', pygame_menu.events.EXIT)
 

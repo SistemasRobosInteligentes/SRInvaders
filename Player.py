@@ -5,12 +5,16 @@ from Laser import Laser
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,constraint,speed):
+    def __init__(self,pos, screen_width, screen_height):
         super().__init__()
-        self.image = pygame.image.load('Images/player.png').convert_alpha()
+        self.screen_height = screen_height
+        self.screen_width = screen_width
+        if (self.screen_width/1920 < self.screen_height/1080):
+            self.image = pygame.transform.scale(pygame.image.load('Images/player.png').convert_alpha(),(round(45*self.screen_width/1920),round(45*self.screen_width/1920)))
+        else:
+            self.image = pygame.transform.scale(pygame.image.load('Images/player.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
         self.rect = self.image.get_rect(midbottom = pos)
-        self.speed = speed
-        self.max_x_constraint = constraint
+        self.max_x_constraint = screen_width
         self.ready = True
         self.laser_time = 0
         self.laser_cooldown = 600
@@ -23,10 +27,7 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         keys = pygame.key.get_pressed()
 
-#         if keys[pygame.K_RIGHT]:
-#             self.rect.x += self.speed
-#         elif keys[pygame.K_LEFT]:
-#             self.rect.x -= self.speed
+
     
     def handle_lasers(self, user):
         if self.ready and user.may_shoot:
