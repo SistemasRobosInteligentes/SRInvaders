@@ -1,10 +1,12 @@
 #chicken invaders
 #import pygame
 import pygame
-from random import choice, randint
+from random import choice, randint, random
 import sqlite3
 from threading import Thread
 import time
+import numpy as np
+
 
 #SELF MADE CODE IMPORTS
 from Alien import Alien
@@ -235,22 +237,35 @@ class Game:
     def alien_shoot(self):
         columns = self.get_all_X()
         all_aliens = self.aliens.sprites()
+        number_aliens = len(all_aliens)
         bottom_aliens = []
 
         sublists = [[alien for alien in all_aliens if alien.rect.x == col] for col in columns]
-        #print(sublists)
+
         for sublist in sublists: 
-            #print(sublist)
-            #print()
             sublist.sort(reverse = True, key=get_y)
             bottom_aliens.append(sublist[0])
-            #print(sublist[0])
+
+        #Chance to shoot
+        shooting_chance = round(-0.0069*number_aliens + 1,2)
+        rd_number = random()
+        if bottom_aliens and shooting_chance > rd_number:
+            #Choose the alien to shoot, using a gaussian
+            alien_pos_x = [0]
+            player_pos_x = self.player.sprite.rect.center[0]/self.screen_width
+            player_pos_section = 0
+            for alien in bottom_aliens:
+                alien_pos_x.append(alien.rect.center[0]/self.screen_width)
+
+            alien_pos_x.append(1)
+            for section in range(0,len(alien_pos_x)-1):
+                if(player_pos_x >= alien_pos_x[section] and player_pos_x < alien_pos_x[section + 1]):
+                    player_pos_section = section            
             
-        
-        #bottom_aliens = [sublist.sort(reverse = True, key=get_x)[0] for sublist in sublists]
-        
-        if bottom_aliens:
-            random_alien = choice(bottom_aliens)
+            distribution = np.random.normal(player_pos_section,1)
+            clipped_distribution = np.clip(distribution,0,len(bottom_aliens) - 1)
+            random_choice = int(round(clipped_distribution))
+            random_alien = bottom_aliens[random_choice]
             laser_sprite = Laser(random_alien.rect.center,self.alien_lasers_speed,self.screen_height + self.camera_height)
 
             laser_sprite.image = pygame.transform.flip(laser_sprite.image, False, True)

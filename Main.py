@@ -59,7 +59,7 @@ def gameRun(menu_options, monitor_height, monitor_width, screen):
     #player_user.camera_width = camera_width
     
     
-    
+
     clock = pygame.time.Clock()
     
     player_user.camera_on = True
@@ -295,6 +295,7 @@ if __name__ == '__main__':
     total_height = monitor_height
     
     screen = pygame.display.set_mode((monitor_width,total_height),pygame.FULLSCREEN, pygame.SCALED)
+
     
     menu_inicial = pygame_menu.Menu('MineInvaders',monitor_width,total_height,theme=mine_invader_theme)
 
