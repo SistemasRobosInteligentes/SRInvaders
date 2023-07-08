@@ -27,6 +27,9 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         keys = pygame.key.get_pressed()
 
+    def muteSound(self):
+        self.laser_sound.set_volume(0)
+
 
     
     def handle_lasers(self, user):

@@ -88,7 +88,7 @@ def gameRun(menu_options, monitor_height, monitor_width, screen):
         instruction_page_4.mainloop(screen,disable_loop = True)
         time.sleep(1.75)
 
-    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty)
+    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound)
     
     
     
@@ -305,6 +305,7 @@ if __name__ == '__main__':
     menu_inicial.add.selector('Difficulty  ', [('Easy', 0), ('Medium', 1),('Hard',2)], onchange=menu_options.setDifficulty)
     menu_inicial.add.button('Play', gameRun,menu_options,monitor_height,monitor_width,screen,accept_kwargs=True)
     menu_inicial.add.button('Leaderboard', showLeaderboard)
+    menu_inicial.add.selector('Sound ', [('ON',True),('OFF',False)],onchange=menu_options.setSound)
     menu_inicial.add.button('Quit', pygame_menu.events.EXIT)
 
     menu_options.menu_music.play(loops = -1)
