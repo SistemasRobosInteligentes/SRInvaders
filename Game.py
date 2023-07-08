@@ -39,6 +39,7 @@ class Game:
         
         # Player setup
         player_sprite = Player((screen_width / 2, round(0.98*screen_height)),screen_width,screen_height)
+
         self.player = pygame.sprite.GroupSingle(player_sprite)
         self.name = name
             
@@ -305,7 +306,7 @@ class Game:
         self.ammobox_spawn_time -= 1
         if self.ammobox_spawn_time <= 0 and not self.won:
             self.ammobox.add(Ammobox(choice(['right','left']),self.screen_width,self.camera_height,self.screen_height))
-            self.ammobox_spawn_time = randint(400,800)
+            self.ammobox_spawn_time = randint(600,1000)
         
     def collision_checks(self):
 
@@ -401,7 +402,7 @@ class Game:
             for box in self.ammobox:
                 if pygame.sprite.spritecollide(box,self.player, False):
                     box.kill()
-                    self.player.sprite.lasers_quiver += 10
+                    self.player.sprite.lasers_quiver += 12
 
 
 

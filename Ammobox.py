@@ -11,7 +11,7 @@ class Ammobox(pygame.sprite.Sprite):
             
             
             
-        self.rect = self.image.get_rect(topleft = (x,screen_height+150)) #
+        self.rect = self.image.get_rect(topleft = (x,round(0.95*screen_height))) #
 
     def update(self):
         self.rect.x += 0
