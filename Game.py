@@ -15,6 +15,7 @@ from Extra import Extra
 from Laser import Laser
 from Player import Player
 from Powerups import Powerups
+from Button import Button
 
 shape = [
 '  xxxxxxx',
@@ -54,7 +55,7 @@ class Game:
         self.live_surf = pygame.image.load('Images/heart.png').convert_alpha()
         self.live_x_start_pos = screen_width - round(48*self.screen_width/1920)
         self.score = 0
-        self.font = pygame.font.Font('Font/Pixeled.ttf',20)
+        self.font = pygame.font.Font('Font/Pixeled.ttf',int(round(32*self.screen_width/1920)))
         
         # Obstacle setup
         self.shape = shape
@@ -431,14 +432,6 @@ class Game:
             victory_rect = victory_surf.get_rect(center = (self.screen_width / 2, self.screen_height / 2 + self.camera_height - 60*self.screen_height/1080))
             self.screen.blit(victory_surf,victory_rect)
 
-            victory_surf = self.font.render('CLICK R TO RESTART',False,'white')
-            victory_rect = victory_surf.get_rect(center = (self.screen_width / 2, self.screen_height / 2 + self.camera_height))
-            self.screen.blit(victory_surf,victory_rect)
-
-            victory_surf = self.font.render('CLICK M TO GO BACK TO MENU',False,'white')
-            victory_rect = victory_surf.get_rect(center = (self.screen_width / 2, self.screen_height / 2 + self.camera_height + 30*self.screen_height/1080))
-            self.screen.blit(victory_surf,victory_rect)
-
             self.won = True
             self.game_music.stop()
     
@@ -470,14 +463,6 @@ class Game:
             self.game_music.stop()
             lose_surf = self.font.render('YOU LOST',False,'white')
             lose_rect = lose_surf.get_rect(center = (self.screen_width/2, self.screen_height / 2 + self.camera_height - 30*self.screen_height/1080))
-            self.screen.blit(lose_surf,lose_rect)
-
-            lose_surf = self.font.render('CLICK R TO RESTART',False,'white')
-            lose_rect = lose_surf.get_rect(center = (self.screen_width/2, self.screen_height / 2 + self.camera_height))
-            self.screen.blit(lose_surf,lose_rect)
-
-            lose_surf = self.font.render('CLICK M TO GO BACK TO MENU',False,'white')
-            lose_rect = lose_surf.get_rect(center = (self.screen_width/2, self.screen_height / 2 + self.camera_height + 30*self.screen_height/1080))
             self.screen.blit(lose_surf,lose_rect)
 
             if self.aliens:
