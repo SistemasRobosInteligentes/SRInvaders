@@ -71,11 +71,11 @@ class human_user:
             try:
                 if results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1 and results.pose_landmarks.landmark[23].x > 0 and results.pose_landmarks.landmark[23].x < 1 and results.pose_landmarks.landmark[24].x > 0 and results.pose_landmarks.landmark[24].x < 1:
                     calculated_x = self.screen_width - math.floor(((results.pose_landmarks.landmark[11].x + results.pose_landmarks.landmark[12].x + results.pose_landmarks.landmark[23].x + results.pose_landmarks.landmark[24].x)*self.screen_width/4))
-                    self.x_pos = round((calculated_x - 65)*self.screen_width/(self.screen_width-130))
+                    self.x_pos = round((calculated_x - 65*self.screen_width/1920)*self.screen_width/(self.screen_width-130*self.screen_width/1920))
                     if self.x_pos < 0:
                         self.x_pos = 0
-                    elif self.x_pos > self.screen_width - 32:
-                        self.x_pos = self.screen_width - 32
+                    elif self.x_pos > self.screen_width - round(32*self.screen_width/1920):
+                        self.x_pos = self.screen_width - round(32*self.screen_width/1920)
                 #else:
                     #self.x_pos = self.screen_width/2 - 16
                     
