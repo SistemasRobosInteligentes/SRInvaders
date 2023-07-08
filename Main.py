@@ -14,11 +14,43 @@ import time
 from Game import Game
 from human_user import human_user
 from menuOptions import menuOptions
+from Button import Button
 
 
 
 
 from screeninfo import get_monitors
+
+def restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial):
+    cap.release()
+    gameRun(menu_options, monitor_height,monitor_width, screen)
+
+def menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial):
+    cap.release()
+    game.game_music.stop()
+    menu_options.menu_music.play(loops = -1)
+    menu_inicial.mainloop(screen)
+
+def buttons_def(monitor_height, monitor_width, screen,button_list):
+    button_restart = Button(
+        (320*monitor_width/1920,960*monitor_height/1920),
+        "RESTART",
+        int(round(32 * monitor_width/1920)),
+        button_list,
+        screen,
+        command=restart)
+                             
+
+
+    button_menu = Button(
+        (1374*monitor_width/1920,960*monitor_height/1920),
+        "    MENU    ",
+        int(round(32*monitor_width/1920)),
+        button_list,
+        screen,
+        command=menu)
+
+
 
 def gameRun(menu_options, monitor_height, monitor_width, screen):
     menu_options.menu_music.stop()
@@ -90,47 +122,58 @@ def gameRun(menu_options, monitor_height, monitor_width, screen):
 
     game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound)
     
-    
-    
+    button_list = pygame.sprite.Group()
+    buttons_def(monitor_height,monitor_width,screen,button_list)
+
     while True:
-           keys = pygame.key.get_pressed()
+           
+        
+  
+            screen.fill((30,30,30))
+            for event in pygame.event.get():
+                keys = pygame.key.get_pressed()
+                #PRESSING R - RESTARTS THE GAME
+                if keys[pygame.K_r]:
+                    restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial)
+                    #cap.release()
+                    #gameRun(menu_options, monitor_height,monitor_width, screen)
 
-           if keys[pygame.K_r]:
-             cap.release()
-             gameRun(menu_options, monitor_height,monitor_width, screen)
-             
-           elif keys[pygame.K_m]:
-             cap.release()
-             game.game_music.stop()
-             menu_options.menu_music.play(loops = -1)
-             menu_inicial.mainloop(screen)
-             
-             
-           screen.fill((30,30,30))
-           for event in pygame.event.get():
-               if event.type == pygame.QUIT:
-                   cap.release()
-                   pygame.display.quit()
-                   pygame.quit()
-                   sys.exit()
+                #PRESSING M - GOES BACK TO MENU
+                elif keys[pygame.K_m]:
+                    menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial)
+                    #cap.release()
+                    #game.game_music.stop()
+                    #menu_options.menu_music.play(loops = -1)
+                    #menu_inicial.mainloop(screen)
+
+                if event.type == pygame.QUIT:
+                    cap.release()
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
                    
-               if event.type == ALIENLASER:
-                   game.alien_shoot()
-   
-           game.run(player_user)
-           #crt.draw()
+                if event.type == ALIENLASER:
+                    game.alien_shoot()
 
-           camera_image_surface = pygame.surfarray.make_surface(cv2.cvtColor(player_user.image_mat, cv2.COLOR_BGR2RGB))
+            if game.won or game.lost:
+                button_list.update(cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial)
+                button_list.draw(screen)
+
+
+            game.run(player_user)
+            #crt.draw()
+
+            camera_image_surface = pygame.surfarray.make_surface(cv2.cvtColor(player_user.image_mat, cv2.COLOR_BGR2RGB))
             
-           camera_image_surface_rotated = pygame.transform.rotate(camera_image_surface,270)
-           #screen.blit(camera_image_surface_rotated,((screen_width-camera_width)/2,0))
+            camera_image_surface_rotated = pygame.transform.rotate(camera_image_surface,270)
+            #screen.blit(camera_image_surface_rotated, ((screen_width-camera_width)/2,0))
 
 
 
-           pygame.display.flip()
+            pygame.display.flip()
            
 
-           clock.tick(30)
+            clock.tick(30)
     
 
 def showEasyLeaderboard(leaderboard_menu):
