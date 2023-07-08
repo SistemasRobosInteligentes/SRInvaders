@@ -15,7 +15,9 @@ from Extra import Extra
 from Laser import Laser
 from Player import Player
 from Powerups import Powerups
+from Ammobox import Ammobox
 from Button import Button
+
 
 shape = [
 '  xxxxxxx',
@@ -39,8 +41,12 @@ class Game:
         player_sprite = Player((screen_width / 2, round(0.98*screen_height)),screen_width,screen_height)
         self.player = pygame.sprite.GroupSingle(player_sprite)
         self.name = name
+            
+        # Ammobox setup
+        # Ammobox_sprite = Ammobox(random_side,screen_height + camera_height)
+        self.ammobox = pygame.sprite.GroupSingle() #Ammobox_sprite
+        self.ammobox_spawn_time = randint(40,80)
         
-
         #Difficulty setup
         self.difficulty = difficulty
 
@@ -294,7 +300,13 @@ class Game:
         if self.extra_spawn_time <= 0 and not self.won:
             self.extra.add(Extra(choice(['right','left']),self.screen_width,self.camera_height, self.screen_height))
             self.extra_spawn_time = randint(400,800)
-
+            
+    def ammobox_timer(self):
+        self.ammobox_spawn_time -= 1
+        if self.ammobox_spawn_time <= 0 and not self.won:
+            self.ammobox.add(Ammobox(choice(['right','left']),self.screen_width,self.camera_height,self.screen_height))
+            self.ammobox_spawn_time = randint(400,800)
+        
     def collision_checks(self):
 
         # player lasers 
@@ -384,7 +396,19 @@ class Game:
                         if(self.alien_lasers_speed > 2):
                             self.alien_lasers_speed -=2*self.screen_height/1080
                             Thread(target = self.alien_laser_speed_timer).start()   
+        # ammo
+        if(self.ammobox):
+            for box in self.ammobox:
+                if pygame.sprite.spritecollide(box,self.player, False):
+                    box.kill()
+                    self.player.sprite.lasers_quiver += 10
 
+
+
+
+
+
+                        
         # aliens
         if self.aliens:
             for alien in self.aliens:
@@ -478,16 +502,19 @@ class Game:
         self.alien_lasers.update()
         self.powerups.update()
         self.extra.update()
+        self.ammobox.update()
         
         self.aliens.update(self.alien_direction)
         self.alien_position_checker()
         self.extra_alien_timer()
+        self.ammobox_timer()
         self.collision_checks()
         
         self.player.sprite.lasers.draw(self.screen)
         self.player.draw(self.screen)
         self.blocks.draw(self.screen)
         self.aliens.draw(self.screen)
+        self.ammobox.draw(self.screen)
         self.alien_lasers.draw(self.screen)
         self.powerups.draw(self.screen)
         
