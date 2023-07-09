@@ -31,9 +31,9 @@ def menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,men
     menu_options.menu_music.play(loops = -1)
     menu_inicial.mainloop(screen)
 
-def buttons_def(monitor_height, monitor_width, screen,button_list):
+def buttons_def(monitor_height, monitor_width, screen,button_list, camera_height):
     button_restart = Button(
-        (320*monitor_width/1920,960*monitor_height/1920),
+        (290*monitor_width/1920,960*monitor_height/1920 + camera_height*0.75),
         "RESTART",
         int(round(32 * monitor_width/1920)),
         button_list,
@@ -43,7 +43,7 @@ def buttons_def(monitor_height, monitor_width, screen,button_list):
 
 
     button_menu = Button(
-        (1374*monitor_width/1920,960*monitor_height/1920),
+        (1404*monitor_width/1920,960*monitor_height/1920 + camera_height*0.75),
         "    MENU    ",
         int(round(32*monitor_width/1920)),
         button_list,
@@ -52,14 +52,11 @@ def buttons_def(monitor_height, monitor_width, screen,button_list):
 
 
 
-def gameRun(menu_options, monitor_height, monitor_width, screen):
+def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
     menu_options.menu_music.stop()
     menu_options.menu_click.play()
-    
-    #screen_width = 700
-    
-    
-    player_user = human_user(monitor_width)
+        
+    player_user = human_user(camera_height, monitor_width)
     
     
     cap = cv2.VideoCapture(0)
@@ -84,8 +81,6 @@ def gameRun(menu_options, monitor_height, monitor_width, screen):
         ALIENLASER = pygame.USEREVENT + 1
         pygame.time.set_timer(ALIENLASER,800)
     
-    camera_height = 0
-    
     
     #player_user.camera_height = camera_height
     #player_user.camera_width = camera_width
@@ -97,33 +92,33 @@ def gameRun(menu_options, monitor_height, monitor_width, screen):
     player_user.camera_on = True
     
     #Instruction page
-    instruction_page_1 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    instruction_page_1.add.image("Images/instruction_image_1.png")
-    instruction_page_2 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    instruction_page_2.add.image("Images/instruction_image_2.png")
-    instruction_page_3 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    instruction_page_3.add.image("Images/instruction_image_3.png")
-    instruction_page_4 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    instruction_page_4.add.image("Images/instruction_image_4.png")
+    #instruction_page_1 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    #instruction_page_1.add.image("Images/instruction_image_1.png")
+    #instruction_page_2 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    #instruction_page_2.add.image("Images/instruction_image_2.png")
+    #instruction_page_3 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    #instruction_page_3.add.image("Images/instruction_image_3.png")
+    #instruction_page_4 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    #instruction_page_4.add.image("Images/instruction_image_4.png")
 
-    for i in range(1,3):
+    # for i in range(1,3):
         
-        instruction_page_1.mainloop(screen,disable_loop = True)
-        time.sleep(0.75)
+    #     instruction_page_1.mainloop(screen,disable_loop = True)
+    #     time.sleep(0.75)
         
-        instruction_page_2.mainloop(screen,disable_loop = True)
-        time.sleep(0.75)
+    #     instruction_page_2.mainloop(screen,disable_loop = True)
+    #     time.sleep(0.75)
         
-        instruction_page_3.mainloop(screen,disable_loop = True)
-        time.sleep(0.75)
+    #     instruction_page_3.mainloop(screen,disable_loop = True)
+    #     time.sleep(0.75)
         
-        instruction_page_4.mainloop(screen,disable_loop = True)
-        time.sleep(1.75)
+    #     instruction_page_4.mainloop(screen,disable_loop = True)
+    #     time.sleep(1.75)
 
-    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound)
+    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound, menu_options.camera)
     
     button_list = pygame.sprite.Group()
-    buttons_def(monitor_height,monitor_width,screen,button_list)
+    buttons_def((monitor_height - camera_height),monitor_width,screen,button_list, camera_height)
 
     while True:
            
@@ -162,11 +157,13 @@ def gameRun(menu_options, monitor_height, monitor_width, screen):
 
             game.run(player_user)
             #crt.draw()
-
+                
             camera_image_surface = pygame.surfarray.make_surface(cv2.cvtColor(player_user.image_mat, cv2.COLOR_BGR2RGB))
             
             camera_image_surface_rotated = pygame.transform.rotate(camera_image_surface,270)
-            #screen.blit(camera_image_surface_rotated, ((screen_width-camera_width)/2,0))
+            
+            if menu_options.camera:
+                screen.blit(camera_image_surface_rotated, ((monitor_width)/2 - player_user.image_mat.shape[1]/2, 0))
 
 
 
@@ -328,11 +325,10 @@ if __name__ == '__main__':
     monitor_width= max(all_monitor_width)
     
     print(monitor_height)
-    print(monitor_width)
-    
-    #camera_height = 450
+    print(monitor_width)    
     
     
+    camera_height = monitor_height*0.25
     
     #print(monitor_height)
     total_height = monitor_height
@@ -346,9 +342,10 @@ if __name__ == '__main__':
 
     menu_inicial.add.text_input('Name  : ', default='Steve',onchange=menu_options.setName)
     menu_inicial.add.selector('Difficulty  ', [('Easy', 0), ('Medium', 1),('Hard',2)], onchange=menu_options.setDifficulty)
-    menu_inicial.add.button('Play', gameRun,menu_options,monitor_height,monitor_width,screen,accept_kwargs=True)
+    menu_inicial.add.button('Play', gameRun,menu_options,monitor_height,monitor_width,screen, camera_height,accept_kwargs=True)
     menu_inicial.add.button('Leaderboard', showLeaderboard)
     menu_inicial.add.selector('Sound ', [('ON',True),('OFF',False)],onchange=menu_options.setSound)
+    menu_inicial.add.selector('Camera ', [('ON',True),('OFF',False)],onchange=menu_options.setCamera)
     menu_inicial.add.button('Quit', pygame_menu.events.EXIT)
 
     menu_options.menu_music.play(loops = -1)

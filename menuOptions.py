@@ -9,7 +9,8 @@ class menuOptions():
         self.menu_music = pygame.mixer.Sound('Sounds/menu.wav')
         self.menu_music.set_volume(0.1)
         self.sound = True
-
+        self.camera = True
+        
         self.menu_click = pygame.mixer.Sound('Sounds/minecraft_click.wav')
         self.menu_click.set_volume(0.1)
 
@@ -29,4 +30,6 @@ class menuOptions():
             self.menu_music.set_volume(0)
             self.menu_click.set_volume(0)
     
+    def setCamera (self,value,camera):
+        self.camera = camera
     

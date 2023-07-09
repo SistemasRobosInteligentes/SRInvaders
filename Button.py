@@ -18,10 +18,12 @@ class Button(pygame.sprite.Sprite):
         self.colors = colors
         self.original_colors = colors
         self.fg, self.bg = self.colors.split(" on ")
+        
         if hover_colors == "black on white":
             self.hover_colors = f"{self.bg} on {self.fg}"
         else:
             self.hover_colors = hover_colors
+        
         self.style = style
         self.borderc = borderc # for the style2
         # font
