@@ -90,12 +90,6 @@ class human_user:
                     self.squat = True
                     
                     
-            try:
-                if ((results.pose_landmarks.landmark[24].y)/(results.pose_landmarks.landmark[26].y)) > 72 or ((results.pose_landmarks.landmark[23].y)/(results.pose_landmarks.landmark[25].y)) > 72 :
-                    self.squat == True
-                    print("\nSquatting")
-            except AttributeError:
-                self.squat == False
             
             if self.may_shoot==True:
                 self.pull_string=False
