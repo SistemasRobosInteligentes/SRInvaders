@@ -23,6 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.laser_time = 0
         self.laser_cooldown = 600
         self.number_lasers = 1
+        self.lasers_quiver = 15                                #Testing max Ammo
         self.lasers = pygame.sprite.Group()
 
         self.laser_sound = pygame.mixer.Sound('Sounds/bow.wav')
@@ -37,8 +38,10 @@ class Player(pygame.sprite.Sprite):
 
     
     def handle_lasers(self, user):
-        if self.ready and user.may_shoot:
+        if self.ready and user.may_shoot and user.pull_string==True:
+          if self.lasers_quiver > 0:                            #Testing max Ammo
             self.shoot_laser()
+            self.lasers_quiver = self.lasers_quiver - 1          #Ammo Going Down
             self.ready = False
             self.laser_time = pygame.time.get_ticks()
             self.laser_sound.play()

@@ -10,6 +10,9 @@ class human_user:
         self.image_mat = []
         self.may_shoot = False
         self.camera_height = camera_height
+
+        self.pull_string = False
+
         self.camera_on = False
         self.x_pos = monitor_width/2
         self.screen_width = monitor_width
@@ -74,13 +77,20 @@ class human_user:
                 #self.x_pos = self.screen_width/2 - 16
                 
             
+            if self.may_shoot==True:
+                self.pull_string=False
+                
             try:
                 if (results.pose_landmarks.landmark[20].y > 0 and results.pose_landmarks.landmark[20].y < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1) or (results.pose_landmarks.landmark[19].y > 0 and results.pose_landmarks.landmark[19].y < 1 and results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1):
-                    
-                    if results.pose_landmarks.landmark[20].y < results.pose_landmarks.landmark[12].y or results.pose_landmarks.landmark[19].y < results.pose_landmarks.landmark[11].y:
+                  if results.pose_landmarks.landmark[20].y > results.pose_landmarks.landmark[12].y and results.pose_landmarks.landmark[19].y > results.pose_landmarks.landmark[11].y:  
+                      self.pull_string = True
+
+                  if results.pose_landmarks.landmark[20].y < results.pose_landmarks.landmark[12].y and self.pull_string == True or results.pose_landmarks.landmark[19].y < results.pose_landmarks.landmark[11].y and self.pull_string == True:
                         self.may_shoot = True
-                    else:
+
+                  else:
                             self.may_shoot = False
+                            
                 else: 
                     self.may_shoot = False
             except AttributeError:

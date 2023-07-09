@@ -92,28 +92,35 @@ def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
     player_user.camera_on = True
     
     #Instruction page
-    #instruction_page_1 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    #instruction_page_1.add.image("Images/instruction_image_1.png")
-    #instruction_page_2 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    #instruction_page_2.add.image("Images/instruction_image_2.png")
-    #instruction_page_3 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    #instruction_page_3.add.image("Images/instruction_image_3.png")
-    #instruction_page_4 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
-    #instruction_page_4.add.image("Images/instruction_image_4.png")
 
-    # for i in range(1,3):
+
+    """ instruction_page_1 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    instruction_page_1.add.image("Images/instruction_image_1.png")
+    instruction_page_2 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    instruction_page_2.add.image("Images/instruction_image_2.png")
+    instruction_page_3 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    instruction_page_3.add.image("Images/instruction_image_3.png")
+    instruction_page_4 = pygame_menu.Menu('Loading...', monitor_width,total_height,theme=mine_invader_theme)
+    instruction_page_4.add.image("Images/instruction_image_4.png")
+
+    for i in range(1,3):
         
-    #     instruction_page_1.mainloop(screen,disable_loop = True)
-    #     time.sleep(0.75)
+        instruction_page_1.mainloop(screen,disable_loop = True)
+        time.sleep(0.75)
         
-    #     instruction_page_2.mainloop(screen,disable_loop = True)
-    #     time.sleep(0.75)
+        instruction_page_2.mainloop(screen,disable_loop = True)
+        time.sleep(0.75)
         
-    #     instruction_page_3.mainloop(screen,disable_loop = True)
-    #     time.sleep(0.75)
+        instruction_page_3.mainloop(screen,disable_loop = True)
+        time.sleep(0.75)
         
-    #     instruction_page_4.mainloop(screen,disable_loop = True)
-    #     time.sleep(1.75)
+
+        instruction_page_4.mainloop(screen,disable_loop = True)
+        time.sleep(1.75)
+
+        instruction_page_4.mainloop(screen,disable_loop = True)
+        time.sleep(1.75) """
+
 
     game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound, menu_options.camera)
     
