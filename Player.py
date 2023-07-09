@@ -5,14 +5,18 @@ from Laser import Laser
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos, screen_width, screen_height):
+    def __init__(self,pos, screen_width, screen_height, camera_height):
         super().__init__()
+        
         self.screen_height = screen_height
         self.screen_width = screen_width
+        self.camera_height = camera_height
+        
         if (self.screen_width/1920 < self.screen_height/1080):
             self.image = pygame.transform.scale(pygame.image.load('Images/player.png').convert_alpha(),(round(45*self.screen_width/1920),round(45*self.screen_width/1920)))
         else:
             self.image = pygame.transform.scale(pygame.image.load('Images/player.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
+        
         self.rect = self.image.get_rect(midbottom = pos)
         self.max_x_constraint = screen_width
         self.ready = True
@@ -61,22 +65,21 @@ class Player(pygame.sprite.Sprite):
 
     def shoot_laser(self):
         if(self.number_lasers == 1):
-            self.lasers.add(Laser(self.rect.center,-8,self.rect.bottom))
+            self.lasers.add(Laser(self.rect.center,-8,self.screen_height, self.screen_width, self.camera_height))
         elif(self.number_lasers == 2):
-            self.lasers.add(Laser([self.rect.center[0] - 8,self.rect.center[1]],-8,self.rect.bottom))
-            self.lasers.add(Laser([self.rect.center[0] + 8,self.rect.center[1]],-8,self.rect.bottom))
+            self.lasers.add(Laser([self.rect.center[0] - 8,self.rect.center[1]],-8,self.screen_height, self.screen_width, self.camera_height))
+            self.lasers.add(Laser([self.rect.center[0] + 8,self.rect.center[1]],-8,self.screen_height, self.screen_width, self.camera_height))
         elif(self.number_lasers == 3):
-            self.lasers.add(Laser([self.rect.center[0] - 12,self.rect.center[1]],-8,self.rect.bottom))
-            self.lasers.add(Laser([self.rect.center[0],self.rect.center[1]],-8,self.rect.bottom))
-            self.lasers.add(Laser([self.rect.center[0] + 12,self.rect.center[1]],-8,self.rect.bottom))
+            self.lasers.add(Laser([self.rect.center[0] - 12,self.rect.center[1]],-8,self.screen_height, self.screen_width, self.camera_height))
+            self.lasers.add(Laser([self.rect.center[0],self.rect.center[1]],-8,self.screen_height, self.screen_width, self.camera_height))
+            self.lasers.add(Laser([self.rect.center[0] + 12,self.rect.center[1]],-8,self.screen_height, self.screen_width, self.camera_height))
         else:
-            self.lasers.add(Laser(self.rect.center,-8,self.rect.bottom)) 
+            self.lasers.add(Laser(self.rect.center,-8,self.screen_height, self.screen_width, self.camera_height)) 
 
     def update(self, user):
         self.handle_lasers(user)
         self.get_input()
         self.rect.x = user.x_pos
-        #print(user.x_pos)
         self.constraint()
         self.recharge()
         self.lasers.update()

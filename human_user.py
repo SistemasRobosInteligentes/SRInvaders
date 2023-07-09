@@ -6,16 +6,20 @@ from screeninfo import get_monitors
 
 
 class human_user:
-    def __init__(self,screen_width):
-        self.screen_width = screen_width
+    def __init__(self,camera_height, monitor_width):
         self.image_mat = []
-        self.x_pos = screen_width/2 - 16
         self.may_shoot = False
+        self.camera_height = camera_height
+
         self.pull_string = False
+
         self.squat = False
-        self.camera_width = 600
-        self.camera_height = 450
+
+
+
         self.camera_on = False
+        self.x_pos = monitor_width/2
+        self.screen_width = monitor_width
         
     def camera(self, cap):
                 
@@ -26,12 +30,6 @@ class human_user:
         with mp_pose.Pose(
             min_detection_confidence=0.75,
             min_tracking_confidence=0.5) as pose:
-          
-          if cap.isOpened():
-            success, image = cap.read()
-            
-            self.camera_width = image.shape[1]
-            self.camera_height = image.shape[0]
             
           while cap.isOpened():
             success, image = cap.read()
@@ -57,22 +55,20 @@ class human_user:
                 landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
             # Flip the image horizontally for a selfie-view display.
             
-            #image = image[0:image.shape[0],rows_to_ignore:(image.shape[1] - rows_to_ignore),0:image.shape[2]]
-            
-            #truncar em altura
-            #image = image[rows_to_ignore:(image.shape[0] - rows_to_ignore),0:image.shape[1],0:image.shape[2]]
             
             if self.camera_on:
-                image = cv2.resize(image,(int(self.camera_width),int(self.camera_height)))
-                #image = image[rows_to_ignore:(image.shape[0] - rows_to_ignore),0:image.shape[1],0:image.shape[2]]
+                #print((int(image.shape[0] * self.camera_height / image.shape[1]),int(self.camera_height)))
+                image = cv2.resize(image,(int(self.camera_height * 1.25),int(image.shape[0] * self.camera_height * 1.25 / image.shape[1])), interpolation = cv2.INTER_AREA)
                 
                 
             self.image_mat = image
             
             try:
                 if results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1 and results.pose_landmarks.landmark[23].x > 0 and results.pose_landmarks.landmark[23].x < 1 and results.pose_landmarks.landmark[24].x > 0 and results.pose_landmarks.landmark[24].x < 1:
+                    
                     calculated_x = self.screen_width - math.floor(((results.pose_landmarks.landmark[11].x + results.pose_landmarks.landmark[12].x + results.pose_landmarks.landmark[23].x + results.pose_landmarks.landmark[24].x)*self.screen_width/4))
                     self.x_pos = round((calculated_x - 65*self.screen_width/1920)*self.screen_width/(self.screen_width-130*self.screen_width/1920))
+                    
                     if self.x_pos < 0:
                         self.x_pos = 0
                     elif self.x_pos > self.screen_width - round(32*self.screen_width/1920):
@@ -83,6 +79,7 @@ class human_user:
             except AttributeError:
                 print("No pose found")
                 #self.x_pos = self.screen_width/2 - 16
+
             if results.pose_landmarks is not None:
                 ratioright = results.pose_landmarks.landmark[24].y/results.pose_landmarks.landmark[26].y
                 ratioleft = results.pose_landmarks.landmark[23].y/results.pose_landmarks.landmark[25].y
@@ -90,6 +87,7 @@ class human_user:
                     self.squat = True
                     
                     
+
             
             if self.may_shoot==True:
                 self.pull_string=False
