@@ -13,6 +13,10 @@ class human_user:
 
         self.pull_string = False
 
+        self.squat = False
+
+
+
         self.camera_on = False
         self.x_pos = monitor_width/2
         self.screen_width = monitor_width
@@ -75,7 +79,15 @@ class human_user:
             except AttributeError:
                 print("No pose found")
                 #self.x_pos = self.screen_width/2 - 16
-                
+
+            if results.pose_landmarks is not None:
+                ratioright = results.pose_landmarks.landmark[24].y/results.pose_landmarks.landmark[26].y
+                ratioleft = results.pose_landmarks.landmark[23].y/results.pose_landmarks.landmark[25].y
+                if ratioright > 0.72 or ratioleft > 0.72:
+                    self.squat = True
+                    
+                    
+
             
             if self.may_shoot==True:
                 self.pull_string=False
@@ -84,15 +96,17 @@ class human_user:
                 if (results.pose_landmarks.landmark[20].y > 0 and results.pose_landmarks.landmark[20].y < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1) or (results.pose_landmarks.landmark[19].y > 0 and results.pose_landmarks.landmark[19].y < 1 and results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1):
                   if results.pose_landmarks.landmark[20].y > results.pose_landmarks.landmark[12].y and results.pose_landmarks.landmark[19].y > results.pose_landmarks.landmark[11].y:  
                       self.pull_string = True
-
+                      
                   if results.pose_landmarks.landmark[20].y < results.pose_landmarks.landmark[12].y and self.pull_string == True or results.pose_landmarks.landmark[19].y < results.pose_landmarks.landmark[11].y and self.pull_string == True:
                         self.may_shoot = True
-
+                        #print((results.pose_landmarks.landmark[24].y)/(results.pose_landmarks.landmark[26].y)) 
                   else:
                             self.may_shoot = False
                             
                 else: 
                     self.may_shoot = False
+                    
+                
             except AttributeError:
                 self.may_shoot = False
   
