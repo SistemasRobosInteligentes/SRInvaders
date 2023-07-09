@@ -324,7 +324,23 @@ class Game:
                     for alien in aliens_hit:
                         #check for kill
                         alien.life = alien.life - 1
-                        if(alien.life == 0):
+                        if(alien.life <= 0):
+
+                            Rnum = randint(0,100)
+                            if(self.difficulty == 0):
+                                if Rnum <= 5:
+                                    powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
+                                    self.powerups.add(powerup)
+                            if(self.difficulty == 1):
+                                if Rnum <= 5:
+                                    powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
+                                    self.powerups.add(powerup)
+                            if(self.difficulty == 3):
+                                if Rnum <= 2:
+                                    powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
+                                    self.powerups.add(powerup)
+
+
                             self.score += alien.value
                             if alien.value == 100:
                                 self.tier1_sound.play()
@@ -335,19 +351,7 @@ class Game:
                             alien.kill()
                     laser.kill()
 
-                    Rnum = randint(0,100)
-                    if(self.difficulty == 0):
-                        if Rnum <= 5:
-                            powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
-                            self.powerups.add(powerup)
-                    if(self.difficulty == 1):
-                        if Rnum <= 5:
-                            powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
-                            self.powerups.add(powerup)
-                    if(self.difficulty == 3):
-                        if Rnum <= 2:
-                            powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
-                            self.powerups.add(powerup)
+                    
                 # extra collision
                 if pygame.sprite.spritecollide(laser,self.extra,False):
                     self.score += 500
