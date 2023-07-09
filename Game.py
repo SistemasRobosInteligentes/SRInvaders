@@ -30,15 +30,24 @@ shape = [
 
 
 class Game:
-    def __init__(self,screen,screen_width,screen_height,camera_height,name,difficulty,sound):
+    def __init__(self,screen,screen_width,screen_height,camera_height,name,difficulty,sound, camera, player_user):
         #Screen setup
         self.screen = screen
         self.screen_width = screen_width
-        self.screen_height = screen_height
-        self.camera_height = camera_height
+        self.camera = camera
+        
+        if self.camera:
+            self.camera_height = camera_height
+        else:
+            self.camera_height = 0
+        
+        self.screen_height = screen_height - self.camera_height
+        
+        
+        self.player_user = player_user
         
         # Player setup
-        player_sprite = Player((screen_width / 2, round(0.98*screen_height)),screen_width,screen_height)
+        player_sprite = Player((screen_width / 2, round(0.98*self.screen_height + self.camera_height)),self.screen_width,self.screen_height, self.camera_height)
 
         self.player = pygame.sprite.GroupSingle(player_sprite)
         self.name = name
@@ -62,15 +71,26 @@ class Game:
         self.live_surf = pygame.image.load('Images/heart.png').convert_alpha()
         self.live_x_start_pos = screen_width - round(48*self.screen_width/1920)
         self.score = 0
-        self.font = pygame.font.Font('Font/Pixeled.ttf',int(round(32*self.screen_width/1920)))
         
+        
+        if (self.screen_width/1920 < self.screen_height/1080):
+            self.font = pygame.font.Font('Font/Pixeled.ttf',int(round(32*self.screen_width/1920)))
+        else:
+            self.font = pygame.font.Font('Font/Pixeled.ttf',int(round(32*self.screen_height/1080)))
+        
+            
         # Obstacle setup
         self.shape = shape
-        self.block_size = round(10*self.screen_width/1920)
+        
+        if (self.screen_width/1920 < self.screen_height/1080):
+            self.block_size = round(10*self.screen_width/1920)
+        else:
+            self.block_size = round(10*self.screen_height/1080)
+            
         self.blocks = pygame.sprite.Group()
         self.obstacle_amount = 4
         self.obstacle_x_positions = [num * (screen_width / self.obstacle_amount + (48*self.screen_width/1920)) for num in range(self.obstacle_amount)]
-        self.create_multiple_obstacles(*self.obstacle_x_positions, x_start = round(screen_width / (16*self.screen_width/1920)), y_start = round(750*self.screen_height/1080) + camera_height)
+        self.create_multiple_obstacles(*self.obstacle_x_positions, x_start = round(screen_width / (16*self.screen_width/1920)), y_start = round(750*self.screen_height/1080) + self.camera_height)
 
         # Alien setup
         self.aliens = pygame.sprite.Group()
@@ -97,7 +117,7 @@ class Game:
         self.extra_spawn_time = randint(40,80)
 
         # Audio
-        self.sound =sound
+        self.sound = sound
 
         self.game_music = pygame.mixer.Sound('Sounds/otherside.wav')
         self.game_music.set_volume(0.1)
@@ -201,24 +221,24 @@ class Game:
                 x = col_index * x_distance + x_offset
                 y = row_index * (y_distance) + y_offset
                 if(self.difficulty == 0):
-                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/chicken.png", self.screen_height, self.screen_width)
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/pig.png", self.screen_height, self.screen_width)
-                    else: alien_sprite = Alien('tier1',x,y,"Images/sheep.png", self.screen_height, self.screen_width)
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/chicken.png", self.screen_height, self.screen_width, self.camera_height)
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/pig.png", self.screen_height, self.screen_width, self.camera_height)
+                    else: alien_sprite = Alien('tier1',x,y,"Images/sheep.png", self.screen_height, self.screen_width, self.camera_height)
                     self.aliens.add(alien_sprite)
                 elif(self.difficulty == 1):
-                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/zombie.png", self.screen_height, self.screen_width)
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/spider.png", self.screen_height, self.screen_width)
-                    else: alien_sprite = Alien('tier1',x,y,"Images/slime.png", self.screen_height, self.screen_width)
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/zombie.png", self.screen_height, self.screen_width, self.camera_height)
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/spider.png", self.screen_height, self.screen_width, self.camera_height)
+                    else: alien_sprite = Alien('tier1',x,y,"Images/slime.png", self.screen_height, self.screen_width, self.camera_height)
                     self.aliens.add(alien_sprite)
                 elif(self.difficulty == 2):
-                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/blaze.png", self.screen_height, self.screen_width)
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/skeleton.png", self.screen_height, self.screen_width)
-                    else: alien_sprite = Alien('tier1',x,y,"Images/creeper.png", self.screen_height, self.screen_width)
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/blaze.png", self.screen_height, self.screen_width, self.camera_height)
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/skeleton.png", self.screen_height, self.screen_width, self.camera_height)
+                    else: alien_sprite = Alien('tier1',x,y,"Images/creeper.png", self.screen_height, self.screen_width, self.camera_height)
                     self.aliens.add(alien_sprite)
                 else:
-                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/sheep.png", self.screen_height, self.screen_width)
-                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/pig.png", self.screen_height, self.screen_width)
-                    else: alien_sprite = Alien('tier1',x,y,"Images/chicken.png", self.screen_height, self.screen_width)
+                    if row_index == 0: alien_sprite = Alien('tier3',x,y,"Images/sheep.png", self.screen_height, self.screen_width, self.camera_height)
+                    elif 1 <= row_index <= 2: alien_sprite = Alien('tier2',x,y,"Images/pig.png", self.screen_height, self.screen_width, self.camera_height)
+                    else: alien_sprite = Alien('tier1',x,y,"Images/chicken.png", self.screen_height, self.screen_width, self.camera_height)
                     self.aliens.add(alien_sprite)
 
     def alien_position_checker(self):
@@ -290,7 +310,7 @@ class Game:
             clipped_distribution = np.clip(distribution,0,len(bottom_aliens) - 1)
             random_choice = int(round(clipped_distribution))
             random_alien = bottom_aliens[random_choice]
-            laser_sprite = Laser(random_alien.rect.center,self.alien_lasers_speed,self.screen_height + self.camera_height)
+            laser_sprite = Laser(random_alien.rect.center,self.alien_lasers_speed,self.screen_height, self.screen_width, self.camera_height)
 
             laser_sprite.image = pygame.transform.flip(laser_sprite.image, False, True)
             self.alien_lasers.add(laser_sprite)
@@ -299,13 +319,13 @@ class Game:
     def extra_alien_timer(self):
         self.extra_spawn_time -= 1
         if self.extra_spawn_time <= 0 and not self.won:
-            self.extra.add(Extra(choice(['right','left']),self.screen_width,self.camera_height, self.screen_height))
+            self.extra.add(Extra(choice(["right","left"]),self.screen_width,self.camera_height, self.screen_height))
             self.extra_spawn_time = randint(400,800)
             
     def ammobox_timer(self):
         self.ammobox_spawn_time -= 1
         if self.ammobox_spawn_time <= 0 and not self.won:
-            self.ammobox.add(Ammobox(choice(['right','left']),self.screen_width,self.camera_height,self.screen_height))
+            self.ammobox.add(Ammobox(round(0.98*self.screen_height + self.camera_height),self.screen_width,self.camera_height,self.screen_height, self.player_user))
             self.ammobox_spawn_time = randint(600,1000)
         
     def collision_checks(self):
@@ -329,15 +349,15 @@ class Game:
                             Rnum = randint(0,100)
                             if(self.difficulty == 0):
                                 if Rnum <= 5:
-                                    powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
+                                    powerup = Powerups(alien.rect.center,5,self.screen_height, self.screen_width, self.camera_height)
                                     self.powerups.add(powerup)
                             if(self.difficulty == 1):
                                 if Rnum <= 5:
-                                    powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
+                                    powerup = Powerups(alien.rect.center,5,self.screen_height, self.screen_width, self.camera_height)
                                     self.powerups.add(powerup)
                             if(self.difficulty == 3):
                                 if Rnum <= 2:
-                                    powerup = Powerups(alien.rect.center,5,self.screen_height + self.camera_height, self.screen_width)
+                                    powerup = Powerups(alien.rect.center,5,self.screen_height, self.screen_width, self.camera_height)
                                     self.powerups.add(powerup)
 
 
@@ -351,13 +371,12 @@ class Game:
                             alien.kill()
                     laser.kill()
 
-                    
                 # extra collision
                 if pygame.sprite.spritecollide(laser,self.extra,False):
                     self.score += 500
                     self.dragon_sound.play()         
                     laser.kill()
-                    powerup = Powerups(self.extra.sprite.rect.center,5,self.screen_height + self.camera_height,self.screen_width)
+                    powerup = Powerups(self.extra.sprite.rect.center,5,self.screen_height,self.screen_width, self.camera_height)
                     self.extra.sprite.kill()
                     self.powerups.add(powerup)
                     
@@ -450,7 +469,7 @@ class Game:
                 diff_string="ERROR"
 
             victory_surf = self.font.render('Name: ' + self.name, False ,'white')
-            victory_rect = victory_surf.get_rect(center = (self.screen_width / 2, self.screen_height / 2 + self.camera_height - 150*self.screen_height/1080))
+            victory_rect = victory_surf.get_rect(center = (self.screen_width / 2, self.screen_height / 2 + self.camera_height - 170*self.screen_height/1080))
             self.screen.blit(victory_surf,victory_rect)
 
             victory_surf = self.font.render('Score: ' + str(self.score) + '; Difficulty: ' + diff_string,False,'white')

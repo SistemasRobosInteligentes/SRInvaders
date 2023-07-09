@@ -1,7 +1,7 @@
 import pygame
 
 class Alien(pygame.sprite.Sprite):
-    def __init__(self,color,x,y,file_path, screen_height, screen_width):
+    def __init__(self,color,x,y,file_path, screen_height, screen_width, camera_height):
         super().__init__()
         
         self.screen_height = screen_height
@@ -12,7 +12,7 @@ class Alien(pygame.sprite.Sprite):
         else:
             self.image = pygame.transform.scale(pygame.image.load(file_path).convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
         
-        self.rect = self.image.get_rect(topleft = (x,y))
+        self.rect = self.image.get_rect(topleft = (x,y + camera_height))
         
         if color == 'tier1': 
             self.value = 100
