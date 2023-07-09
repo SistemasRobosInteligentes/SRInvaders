@@ -30,7 +30,7 @@ shape = [
 
 
 class Game:
-    def __init__(self,screen,screen_width,screen_height,camera_height,name,difficulty,sound, camera):
+    def __init__(self,screen,screen_width,screen_height,camera_height,name,difficulty,sound, camera, player_user):
         #Screen setup
         self.screen = screen
         self.screen_width = screen_width
@@ -44,8 +44,10 @@ class Game:
         self.screen_height = screen_height - self.camera_height
         
         
+        self.player_user = player_user
+        
         # Player setup
-        player_sprite = Player((screen_width / 2, round(0.98*screen_height)),self.screen_width,self.screen_height, self.camera_height)
+        player_sprite = Player((screen_width / 2, round(0.98*self.screen_height + self.camera_height)),self.screen_width,self.screen_height, self.camera_height)
 
         self.player = pygame.sprite.GroupSingle(player_sprite)
         self.name = name
@@ -317,13 +319,13 @@ class Game:
     def extra_alien_timer(self):
         self.extra_spawn_time -= 1
         if self.extra_spawn_time <= 0 and not self.won:
-            self.extra.add(Extra(choice(['right','left']),self.screen_width,self.camera_height, self.screen_height))
+            self.extra.add(Extra(choice(["right","left"]),self.screen_width,self.camera_height, self.screen_height))
             self.extra_spawn_time = randint(400,800)
             
     def ammobox_timer(self):
         self.ammobox_spawn_time -= 1
         if self.ammobox_spawn_time <= 0 and not self.won:
-            self.ammobox.add(Ammobox(choice(['right','left']),self.screen_width,self.camera_height,self.screen_height))
+            self.ammobox.add(Ammobox(round(0.98*self.screen_height + self.camera_height),self.screen_width,self.camera_height,self.screen_height, self.player_user))
             self.ammobox_spawn_time = randint(600,1000)
         
     def collision_checks(self):

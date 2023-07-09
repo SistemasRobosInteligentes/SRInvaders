@@ -21,11 +21,11 @@ from Button import Button
 
 from screeninfo import get_monitors
 
-def restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial):
+def restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial, camera_height):
     cap.release()
-    gameRun(menu_options, monitor_height,monitor_width, screen)
+    gameRun(menu_options, monitor_height,monitor_width, screen, camera_height)
 
-def menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial):
+def menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial, camera_height):
     cap.release()
     game.game_music.stop()
     menu_options.menu_music.play(loops = -1)
@@ -122,7 +122,7 @@ def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
         time.sleep(1.75) """
 
 
-    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound, menu_options.camera)
+    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound, menu_options.camera, player_user)
     
     button_list = pygame.sprite.Group()
     buttons_def((monitor_height - camera_height),monitor_width,screen,button_list, camera_height)
@@ -136,13 +136,13 @@ def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
                 keys = pygame.key.get_pressed()
                 #PRESSING R - RESTARTS THE GAME
                 if keys[pygame.K_r]:
-                    restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial)
+                    restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial, camera_height)
                     #cap.release()
                     #gameRun(menu_options, monitor_height,monitor_width, screen)
 
                 #PRESSING M - GOES BACK TO MENU
                 elif keys[pygame.K_m]:
-                    menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial)
+                    menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial, camera_height)
                     #cap.release()
                     #game.game_music.stop()
                     #menu_options.menu_music.play(loops = -1)
@@ -158,7 +158,7 @@ def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
                     game.alien_shoot()
 
             if game.won or game.lost:
-                button_list.update(cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial)
+                button_list.update(cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial, camera_height)
                 button_list.draw(screen)
 
 

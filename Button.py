@@ -45,14 +45,14 @@ class Button(pygame.sprite.Sprite):
         self.text_render = self.font.render(self.text, 1, self.fg)
         self.image = self.text_render
 
-    def update(self,cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial):
+    def update(self,cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial, camera_height):
         self.fg, self.bg = self.colors.split(" on ")
         if self.style == 1:
             self.draw_button1()
         elif self.style == 2:
             self.draw_button2()
         self.hover()
-        self.click(cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial)
+        self.click(cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial, camera_height)
 
     def draw_button1(self):
         ''' draws 4 lines around the button and the background '''
@@ -84,22 +84,22 @@ class Button(pygame.sprite.Sprite):
             
         self.render()
 
-    def restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial):
+    def restart(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial, camera_height):
         cap.release()
-        gameRun(menu_options, monitor_height,monitor_width, screen)
+        gameRun(menu_options, monitor_height,monitor_width, screen, camera_height)
 
-    def menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial):
+    def menu(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial, camera_height):
         cap.release()
         game.game_music.stop()
         menu_options.menu_music.play(loops = -1)
         menu_inicial.mainloop(screen)
 
-    def click(self,cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial):
+    def click(self,cap,menu_options, monitor_height,monitor_width, screen,game,gameRun,menu_inicial, camera_height):
         ''' checks if you click on the button and makes the call to the action just one time'''
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and self.pressed == 1:
                 print("Executing code for button '" + self.text + "'")
-                self.command(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial)
+                self.command(game,cap,menu_options, monitor_height,monitor_width, screen,gameRun,menu_inicial, camera_height)
                 self.pressed = 0
                   
             if pygame.mouse.get_pressed() == (0,0,0):
