@@ -305,7 +305,22 @@ def showLeaderboard():
     # Display the leaderboard menu
     leaderboard_menu.mainloop(screen)        
           
-                    
+
+def showInstructions():
+    menu_options.menu_click.play()
+    
+    # Create a new menu to display the leaderboard
+    instructions_menu = pygame_menu.Menu('Instructions', monitor_width, total_height, theme=mine_invader_theme)
+    
+    # Add a text box to detail instructions
+    instructions_menu.add.label('Move side to side to control the character\nRaise and lower your arm to shoot\nSquat or get a quiver to recharge\nKill all enemies to win')
+    # Add a button to return to the main menu
+    instructions_menu.add.button('Back', menu_inicial.mainloop,screen,accept_kwargs = True)
+
+    # Display the leaderboard menu
+    instructions_menu.mainloop(screen)        
+          
+
         
 
 if __name__ == '__main__':
@@ -351,6 +366,7 @@ if __name__ == '__main__':
     menu_inicial.add.selector('Difficulty  ', [('Easy', 0), ('Medium', 1),('Hard',2)], onchange=menu_options.setDifficulty)
     menu_inicial.add.button('Play', gameRun,menu_options,monitor_height,monitor_width,screen, camera_height,accept_kwargs=True)
     menu_inicial.add.button('Leaderboard', showLeaderboard)
+    menu_inicial.add.button('Instructions', showInstructions)
     menu_inicial.add.selector('Sound ', [('ON',True),('OFF',False)],onchange=menu_options.setSound)
     menu_inicial.add.selector('Camera ', [('ON',True),('OFF',False)],onchange=menu_options.setCamera)
     menu_inicial.add.button('Quit', pygame_menu.events.EXIT)
