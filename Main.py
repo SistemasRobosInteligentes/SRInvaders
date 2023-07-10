@@ -205,7 +205,7 @@ def showEasyLeaderboard(leaderboard_menu):
     leaderboard_easy_menu = pygame_menu.Menu('Leaderboard Easy', monitor_width, total_height, theme=mine_invader_theme)
 
     # Add the top scores for each difficulty level to the menu
-    leaderboard_easy_menu.add.label('Easy Scores:')
+    leaderboard_easy_menu.add.label('Easy Scores')
     for name, score in easy_scores:
         leaderboard_easy_menu.add.label(f'{name}: {score}')
 
@@ -242,7 +242,7 @@ def showMediumLeaderboard(leaderboard_menu):
     leaderboard_medium_menu = pygame_menu.Menu('Leaderboard Medium', monitor_width, total_height, theme=mine_invader_theme)
 
     # Add the top scores for each difficulty level to the menu
-    leaderboard_medium_menu.add.label('Medium Scores:')
+    leaderboard_medium_menu.add.label('Medium Scores')
     for name, score in medium_scores:
         leaderboard_medium_menu.add.label(f'{name}: {score}')
 
@@ -278,7 +278,7 @@ def showHardLeaderboard(leaderboard_menu):
     leaderboard_hard_menu = pygame_menu.Menu('Leaderboard Hard', monitor_width, total_height, theme=mine_invader_theme)
 
     # Add the top scores for each difficulty level to the menu
-    leaderboard_hard_menu.add.label('Hard Scores:')
+    leaderboard_hard_menu.add.label('Hard Scores')
     for name, score in hard_scores:
         leaderboard_hard_menu.add.label(f'{name}: {score}')
 
@@ -313,7 +313,7 @@ def showInstructions():
     instructions_menu = pygame_menu.Menu('Instructions', monitor_width, total_height, theme=mine_invader_theme)
     
     # Add a text box to detail instructions
-    instructions_menu.add.label('Move side to side to control the character\nRaise and lower your arm to shoot\nSquat or get a quiver to recharge\nKill all enemies to win')
+    instructions_menu.add.label('Move side to side to control the character\n\nRaise and lower your arm to shoot\n\nSquat or get a quiver to recharge\n\nKill all enemies to win')
     # Add a button to return to the main menu
     instructions_menu.add.button('Back', menu_inicial.mainloop,screen,accept_kwargs = True)
 

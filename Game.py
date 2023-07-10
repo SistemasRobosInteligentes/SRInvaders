@@ -321,12 +321,12 @@ class Game:
         if self.extra_spawn_time <= 0 and not self.won:
             self.extra.add(Extra(choice(["right","left"]),self.screen_width,self.camera_height, self.screen_height))
             self.extra_spawn_time = randint(400,800)
-            
+    
     def ammobox_timer(self):
         self.ammobox_spawn_time -= 1
         if self.ammobox_spawn_time <= 0 and not self.won:
             self.ammobox.add(Ammobox(round(0.98*self.screen_height + self.camera_height),self.screen_width,self.camera_height,self.screen_height, self.player_user))
-            self.ammobox_spawn_time = randint(600,1000)
+            self.ammobox_spawn_time = randint(800,1200)
         
     def collision_checks(self):
 
