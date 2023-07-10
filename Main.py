@@ -2,6 +2,9 @@
 #import pygame
 import pygame, sys
 import pygame_menu
+import pyautogui
+import platform
+#pip install pyautogui
 #import obstacle
 from random import choice, randint
 #packages for computer vision
@@ -53,6 +56,7 @@ def buttons_def(monitor_height, monitor_width, screen,button_list, camera_height
 
 
 def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
+    close_keyboard(menu_options)
     menu_options.menu_music.stop()
     menu_options.menu_click.play()
         
@@ -290,6 +294,7 @@ def showHardLeaderboard(leaderboard_menu):
     leaderboard_hard_menu.mainloop(screen) 
           
 def showLeaderboard():
+    close_keyboard(menu_options)
     menu_options.menu_click.play()
     # Create a new menu to display the leaderboard
     leaderboard_menu = pygame_menu.Menu('Leaderboard', monitor_width, total_height, theme=mine_invader_theme)
@@ -307,6 +312,7 @@ def showLeaderboard():
           
 
 def showInstructions():
+    close_keyboard(menu_options)
     menu_options.menu_click.play()
     
     # Create a new menu to display the leaderboard
@@ -321,8 +327,15 @@ def showInstructions():
     instructions_menu.mainloop(screen)        
           
 
-        
-
+def close_keyboard(menu_options):
+    #system = platform.system()
+    #print(menu_options.keyboard_visible)
+    if menu_options.keyboard_visible:
+        #print('wah')
+        menu_inicial.get_widget('wah').set_value('OFF')
+        menu_options.setKeyboard('OFF', False)
+        #print(menu_inicial.get_widget('wah').get_value())
+    
 if __name__ == '__main__':
     pygame.init()
 
@@ -367,6 +380,7 @@ if __name__ == '__main__':
     menu_inicial.add.button('Play', gameRun,menu_options,monitor_height,monitor_width,screen, camera_height,accept_kwargs=True)
     menu_inicial.add.button('Leaderboard', showLeaderboard)
     menu_inicial.add.button('Instructions', showInstructions)
+    menu_inicial.add.selector('Virtual Keyboard', [('OFF',False),('ON',True)],selector_id='wah', onchange=menu_options.setKeyboard)
     menu_inicial.add.selector('Sound ', [('ON',True),('OFF',False)],onchange=menu_options.setSound)
     menu_inicial.add.selector('Camera ', [('ON',True),('OFF',False)],onchange=menu_options.setCamera)
     menu_inicial.add.button('Quit', pygame_menu.events.EXIT)
