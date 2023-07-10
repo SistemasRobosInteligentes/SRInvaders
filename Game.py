@@ -23,8 +23,6 @@ shape = [
 '  xxxxxxx',
 ' xxxxxxxxx',
 'xxxxxxxxxxx',
-'xxxxxxxxxxx',
-'xxxxxxxxxxx',
 'xxx     xxx',
 'xx       xx']
 
@@ -51,24 +49,49 @@ class Game:
 
         self.player = pygame.sprite.GroupSingle(player_sprite)
         self.name = name
-            
-        # Ammobox setup
-        # Ammobox_sprite = Ammobox(random_side,screen_height + camera_height)
-        self.ammobox = pygame.sprite.GroupSingle() #Ammobox_sprite
-        self.ammobox_spawn_time = randint(40,80)
         
         #Difficulty setup
         self.difficulty = difficulty
 
+        # Ammobox setup
+        # Ammobox_sprite = Ammobox(random_side,screen_height + camera_height)
+        self.ammobox = pygame.sprite.GroupSingle() #Ammobox_sprite
+        self.ammobox_spawn_time = randint(100,200)
+        self.ammobox_exists = False
+        
+        if(self.difficulty == 0):
+            self.ammobox_timeout = 450
+        elif(self.difficulty == 1):
+            self.ammobox_timeout = 300
+        elif(self.difficulty == 2):
+            self.ammobox_timeout = 150
+        else:
+            self.ammobox_timeout = 450
+        
+        
         #Victory conditions
         self.lost = False     
         self.won = False
         self.leaderboard_path = "Database/MineInvader_Leaderboard.db"
         self.leaderboard_to_save = True
 
+
         # health and score setup
+        self.lasers_quiver = self.player.sprite.lasers_quiver
+        
+        if (self.screen_width/1920 < self.screen_height/1080):
+            self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(45*self.screen_width/1920),round(45*self.screen_width/1920)))
+        else:
+            self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
+            
         self.lives = 3
-        self.live_surf = pygame.image.load('Images/heart.png').convert_alpha()
+        
+        if (self.screen_width/1920 < self.screen_height/1080):
+            self.live_surf = pygame.transform.scale(pygame.image.load('Images/heart.png').convert_alpha(),(round(45*self.screen_width/1920),round(45*self.screen_width/1920)))
+        else:
+            self.live_surf = pygame.transform.scale(pygame.image.load('Images/heart.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
+            
+        
         self.live_x_start_pos = screen_width - round(48*self.screen_width/1920)
         self.score = 0
         
@@ -196,7 +219,7 @@ class Game:
                     if row_index == 0:
                         #green
                         block = Block(self.block_size,(0,128,0),x,y)
-                    elif row_index == 1 or row_index == 2:
+                    elif row_index == 1:
                         #brown
                         block = Block(self.block_size,(139,69,19),x,y)
                     else:
@@ -318,16 +341,43 @@ class Game:
 
     def extra_alien_timer(self):
         self.extra_spawn_time -= 1
-        if self.extra_spawn_time <= 0 and not self.won:
-            self.extra.add(Extra(choice(["right","left"]),self.screen_width,self.camera_height, self.screen_height))
-            self.extra_spawn_time = randint(400,800)
+        if self.extra_spawn_time <= 0 and not self.won and not self.lost:
+            if(self.difficulty == 0):
+                self.extra.add(Extra(choice(["right","left"]), 0.8, self.screen_width,self.camera_height, self.screen_height))
+            elif(self.difficulty == 1):
+                self.extra.add(Extra(choice(["right","left"]), 1.5, self.screen_width,self.camera_height, self.screen_height))
+            elif(self.difficulty == 2):
+                self.extra.add(Extra(choice(["right","left"]), 2, self.screen_width,self.camera_height, self.screen_height))
+            else:
+                self.ammobox_timeout = 100
+            
+            self.extra_spawn_time = randint(round((self.screen_width+100)/ round((0.8 * 3 * self.screen_width/1920))),round((self.screen_width+100)/ round((0.8 * 3 * self.screen_width/1920)) + 200))
     
     def ammobox_timer(self):
         self.ammobox_spawn_time -= 1
         if self.ammobox_spawn_time <= 0 and not self.won:
             self.ammobox.add(Ammobox(round(0.98*self.screen_height + self.camera_height),self.screen_width,self.camera_height,self.screen_height, self.player_user))
-            self.ammobox_spawn_time = randint(800,1200)
-        
+            self.ammobox_spawn_time = randint(800,1300)
+            
+            self.ammobox_exists = True
+            
+        if self.ammobox_exists:
+            self.ammobox_timeout -= 1
+            if self.ammobox_timeout <= 0 and not self.won:
+                self.ammobox_exists = False
+                
+                if(self.difficulty == 0):
+                    self.ammobox_timeout = 450
+                elif(self.difficulty == 1):
+                    self.ammobox_timeout = 300
+                elif(self.difficulty == 2):
+                    self.ammobox_timeout = 150
+                else:
+                    self.ammobox_timeout = 450
+                    
+                for box in self.ammobox:
+                    box.kill()
+            
     def collision_checks(self):
 
         # player lasers 
@@ -419,18 +469,13 @@ class Game:
                         self.drink_sound.play()
                         if(self.alien_lasers_speed > 2):
                             self.alien_lasers_speed -=2*self.screen_height/1080
-                            Thread(target = self.alien_laser_speed_timer).start()   
+                            Thread(target = self.alien_laser_speed_timer).start()
         # ammo
         if(self.ammobox):
             for box in self.ammobox:
-                if pygame.sprite.spritecollide(box,self.player, False):
+                if pygame.sprite.spritecollide(box, self.player, False):
                     box.kill()
                     self.player.sprite.lasers_quiver += 12
-
-
-
-
-
 
                         
         # aliens
@@ -446,13 +491,23 @@ class Game:
     def display_lives(self):
         for live in range(self.lives):
             x = self.live_x_start_pos - (live * round((self.live_surf.get_size()[0]*1.5 - 10)*self.screen_width/1920))
-            self.screen.blit(self.live_surf,(x,round(8*self.screen_height/1080) + self.camera_height))
+            self.screen.blit(self.live_surf,(x,round(10*self.screen_height/1080) + self.camera_height))
 
     def display_score(self):
         score_surf = self.font.render(f'score: {self.score}',False,'white')
         score_rect = score_surf.get_rect(topleft = (round(10*self.screen_width/1920),round(-10*self.screen_height/1080) + self.camera_height))
         self.screen.blit(score_surf,score_rect)
 
+    def display_lasers(self):
+        laser_rect = self.lasers_surf.get_rect(midtop = (round(910*self.screen_width/1920),round(10*self.screen_height/1080) + self.camera_height))
+        self.screen.blit(self.lasers_surf,laser_rect)
+        lasers_surf = self.font.render(f'{self.lasers_quiver}',False,'white')
+        laser_rect = lasers_surf.get_rect(topleft = (round(960*self.screen_width/1920),round(-10*self.screen_height/1080) + self.camera_height))
+        self.screen.blit(lasers_surf,laser_rect)
+        self.lasers_quiver = self.player.sprite.lasers_quiver
+        
+        
+        
     def victory_message(self):
         if not self.aliens.sprites() and not self.lost:
             if(self.extra):
@@ -520,7 +575,8 @@ class Game:
     def alien_laser_speed_timer(self):
         time.sleep(5)
         self.alien_lasers_speed +=2*self.screen_height/1080
-
+    
+    
     def run(self, user):
         self.player.update(user)
         self.alien_lasers.update()
@@ -546,6 +602,7 @@ class Game:
             self.extra.draw(self.screen)
         self.display_lives()
         self.display_score()
+        self.display_lasers()
         self.victory_message()
         self.lose_message()
         self.leaderboardSave()

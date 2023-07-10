@@ -81,10 +81,11 @@ class human_user:
                 #self.x_pos = self.screen_width/2 - 16
 
             if results.pose_landmarks is not None:
-                ratioright = results.pose_landmarks.landmark[24].y/results.pose_landmarks.landmark[26].y
-                ratioleft = results.pose_landmarks.landmark[23].y/results.pose_landmarks.landmark[25].y
-                if ratioright > 0.72 or ratioleft > 0.72:
-                    self.squat = True
+                if results.pose_landmarks.landmark[23].y > 0 and results.pose_landmarks.landmark[23].y < 1 and results.pose_landmarks.landmark[23].x > 0 and results.pose_landmarks.landmark[23].x < 1 and results.pose_landmarks.landmark[24].x > 0 and results.pose_landmarks.landmark[24].x < 1 and results.pose_landmarks.landmark[24].y > 0 and results.pose_landmarks.landmark[24].y < 1 and results.pose_landmarks.landmark[25].y > 0 and results.pose_landmarks.landmark[25].y < 1 and results.pose_landmarks.landmark[25].x > 0 and results.pose_landmarks.landmark[25].x < 1 and results.pose_landmarks.landmark[26].x > 0 and results.pose_landmarks.landmark[26].x < 1 and results.pose_landmarks.landmark[26].y > 0 and results.pose_landmarks.landmark[26].y < 1:
+                    ratioright = results.pose_landmarks.landmark[24].y/results.pose_landmarks.landmark[26].y
+                    ratioleft = results.pose_landmarks.landmark[23].y/results.pose_landmarks.landmark[25].y
+                    if ratioright > 0.90 and ratioleft > 0.90:
+                        self.squat = True
                     
                     
 
@@ -93,7 +94,7 @@ class human_user:
                 self.pull_string=False
                 
             try:
-                if (results.pose_landmarks.landmark[20].y > 0 and results.pose_landmarks.landmark[20].y < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1) or (results.pose_landmarks.landmark[19].y > 0 and results.pose_landmarks.landmark[19].y < 1 and results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1):
+                if (results.pose_landmarks.landmark[20].y > 0 and results.pose_landmarks.landmark[20].y < 1 and results.pose_landmarks.landmark[20].x > 0 and results.pose_landmarks.landmark[20].x < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1 and results.pose_landmarks.landmark[12].y > 0 and results.pose_landmarks.landmark[12].y < 1) or (results.pose_landmarks.landmark[19].y > 0 and results.pose_landmarks.landmark[19].y < 1 and results.pose_landmarks.landmark[19].x > 0 and results.pose_landmarks.landmark[19].x < 1  and results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1 and results.pose_landmarks.landmark[11].y > 0 and results.pose_landmarks.landmark[11].y < 1):
                   if results.pose_landmarks.landmark[20].y > results.pose_landmarks.landmark[12].y and results.pose_landmarks.landmark[19].y > results.pose_landmarks.landmark[11].y:  
                       self.pull_string = True
                       
