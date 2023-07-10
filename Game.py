@@ -490,7 +490,7 @@ class Game:
     
     def display_lives(self):
         for live in range(self.lives):
-            x = self.live_x_start_pos - (live * round((self.live_surf.get_size()[0]*1.5 - 10)*self.screen_width/1920))
+            x = self.live_x_start_pos - (live * round((self.live_surf.get_size()[0]*1.5 - 5)*self.screen_width/1920))
             self.screen.blit(self.live_surf,(x,round(10*self.screen_height/1080) + self.camera_height))
 
     def display_score(self):

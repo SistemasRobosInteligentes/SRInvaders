@@ -20,7 +20,7 @@ class Extra(pygame.sprite.Sprite):
             x = -50
             self.speed = round(3 * self.speed_multiplier * screen_width/1920)
 
-        self.rect = self.image.get_rect(topleft = (x, screen_height*60/1080+camera_height))
+        self.rect = self.image.get_rect(topleft = (x, screen_height*70/1080+camera_height))
 
     def update(self):
         self.rect.x += self.speed
