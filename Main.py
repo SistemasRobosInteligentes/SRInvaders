@@ -18,6 +18,7 @@ from Game import Game
 from human_user import human_user
 from menuOptions import menuOptions
 from Button import Button
+from Tick import Tick
 
 
 
@@ -59,7 +60,7 @@ def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
     close_keyboard(menu_options)
     menu_options.menu_music.stop()
     menu_options.menu_click.play()
-        
+    tick = Tick()
     player_user = human_user(camera_height, monitor_width)
     
     
@@ -126,7 +127,7 @@ def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
         time.sleep(1.75) """
 
 
-    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound, menu_options.camera, player_user)
+    game = Game(screen,monitor_width,monitor_height,camera_height,menu_options.name,menu_options.difficulty,menu_options.sound, menu_options.camera, player_user,tick)
     
     button_list = pygame.sprite.Group()
     buttons_def((monitor_height - camera_height),monitor_width,screen,button_list, camera_height)
@@ -180,8 +181,9 @@ def gameRun(menu_options, monitor_height, monitor_width, screen, camera_height):
 
             pygame.display.flip()
            
-
+            
             clock.tick(30)
+            tick.addTick(30)
     
 
 def showEasyLeaderboard(leaderboard_menu):
