@@ -28,7 +28,9 @@ shape = [
 
 
 class Game:
-    def __init__(self,screen,screen_width,screen_height,camera_height,name,difficulty,sound, camera, player_user):
+    def __init__(self,screen,screen_width,screen_height,camera_height,name,difficulty,sound, camera, player_user,tick):
+        #Tick
+        self.tick = tick
         #Screen setup
         self.screen = screen
         self.screen_width = screen_width
@@ -314,30 +316,31 @@ class Game:
             bottom_aliens.append(sublist[0])
 
         #Chance to shoot
-        shooting_chance = round(-0.0069*number_aliens + 1,2)
-        rd_number = random()
-        if bottom_aliens and shooting_chance > rd_number:
-            #Choose the alien to shoot, using a gaussian
-            alien_pos_x = [0]
-            player_pos_x = self.player.sprite.rect.center[0]/self.screen_width
-            player_pos_section = 0
-            for alien in bottom_aliens:
-                alien_pos_x.append(alien.rect.center[0]/self.screen_width)
+        if(self.tick.getTick() >600):
+            shooting_chance = round(-0.0069*number_aliens + 1,2)
+            rd_number = random()
+            if bottom_aliens and shooting_chance > rd_number:
+                #Choose the alien to shoot, using a gaussian
+                alien_pos_x = [0]
+                player_pos_x = self.player.sprite.rect.center[0]/self.screen_width
+                player_pos_section = 0
+                for alien in bottom_aliens:
+                    alien_pos_x.append(alien.rect.center[0]/self.screen_width)
 
-            alien_pos_x.append(1)
-            for section in range(0,len(alien_pos_x)-1):
-                if(player_pos_x >= alien_pos_x[section] and player_pos_x < alien_pos_x[section + 1]):
-                    player_pos_section = section            
-            
-            distribution = np.random.normal(player_pos_section,1)
-            clipped_distribution = np.clip(distribution,0,len(bottom_aliens) - 1)
-            random_choice = int(round(clipped_distribution))
-            random_alien = bottom_aliens[random_choice]
-            laser_sprite = Laser(random_alien.rect.center,self.alien_lasers_speed,self.screen_height, self.screen_width, self.camera_height)
+                alien_pos_x.append(1)
+                for section in range(0,len(alien_pos_x)-1):
+                    if(player_pos_x >= alien_pos_x[section] and player_pos_x < alien_pos_x[section + 1]):
+                        player_pos_section = section            
+                
+                distribution = np.random.normal(player_pos_section,1)
+                clipped_distribution = np.clip(distribution,0,len(bottom_aliens) - 1)
+                random_choice = int(round(clipped_distribution))
+                random_alien = bottom_aliens[random_choice]
+                laser_sprite = Laser(random_alien.rect.center,self.alien_lasers_speed,self.screen_height, self.screen_width, self.camera_height)
 
-            laser_sprite.image = pygame.transform.flip(laser_sprite.image, False, True)
-            self.alien_lasers.add(laser_sprite)
-            self.laser_sound.play()
+                laser_sprite.image = pygame.transform.flip(laser_sprite.image, False, True)
+                self.alien_lasers.add(laser_sprite)
+                self.laser_sound.play()
 
     def extra_alien_timer(self):
         self.extra_spawn_time -= 1
