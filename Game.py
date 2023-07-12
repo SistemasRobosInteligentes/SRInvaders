@@ -143,6 +143,9 @@ class Game:
 
         # Audio
         self.sound = sound
+        
+        self.ammobox_sound = pygame.mixer.Sound('Sounds/quiver_pickup.wav')
+        self.ammobox_sound.set_volume(0.5)
 
         self.game_music = pygame.mixer.Sound('Sounds/otherside.wav')
         self.game_music.set_volume(0.1)
@@ -202,6 +205,7 @@ class Game:
         if(self.sound == False):
             self.game_music.set_volume(0)
             self.eat_sound.set_volume(0)
+            self.ammobox_sound.set_volume(0)
             self.drink_sound.set_volume(0)
             self.laser_sound.set_volume(0)
             self.tier3_sound.set_volume(0)
@@ -479,6 +483,7 @@ class Game:
                 if pygame.sprite.spritecollide(box, self.player, False):
                     box.kill()
                     self.player.sprite.lasers_quiver += 12
+                    self.ammobox_sound.play()
 
                         
         # aliens
