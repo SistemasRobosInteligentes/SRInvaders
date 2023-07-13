@@ -21,18 +21,20 @@ class Player(pygame.sprite.Sprite):
         self.max_x_constraint = screen_width
         self.ready = True
         self.laser_time = 0
-        self.laser_cooldown = 600
+        self.laser_cooldown = 400
         self.number_lasers = 1
         self.lasers_quiver = 15                                #Testing max Ammo
         self.lasers = pygame.sprite.Group()
         self.laser_sound = pygame.mixer.Sound('Sounds/bow.wav')
         self.laser_sound.set_volume(0.2)
-
+        self.no_laser_sound = pygame.mixer.Sound('Sounds/no_arrows.wav')
+        self.no_laser_sound.set_volume(0.4)
     def get_input(self):
         keys = pygame.key.get_pressed()
 
     def muteSound(self):
         self.laser_sound.set_volume(0)
+        self.no_laser_sound.set_volume(0)
 
 
     
@@ -44,6 +46,8 @@ class Player(pygame.sprite.Sprite):
             self.ready = False
             self.laser_time = pygame.time.get_ticks()
             self.laser_sound.play()
+          else:
+              self.no_laser_sound.play()
         if user.squat==True:
             if (pygame.time.get_ticks())%30 == 0:
                 self.lasers_quiver = self.lasers_quiver + 3

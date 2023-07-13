@@ -83,8 +83,12 @@ class Game:
         
         if (self.screen_width/1920 < self.screen_height/1080):
             self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(45*self.screen_width/1920),round(45*self.screen_width/1920)))
+
+            self.no_lasers_surf = pygame.transform.scale(pygame.image.load('Images/no_arrows_quiver.png').convert_alpha(),(round(45*self.screen_width/1920),round(50*self.screen_width/1920)))
         else:
             self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
+
+            self.no_lasers_surf = pygame.transform.scale(pygame.image.load('Images/no_arrows_quiver.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
             
         self.lives = 3
         
@@ -507,11 +511,19 @@ class Game:
         self.screen.blit(score_surf,score_rect)
 
     def display_lasers(self):
-        laser_rect = self.lasers_surf.get_rect(midtop = (round(910*self.screen_width/1920),round(10*self.screen_height/1080) + self.camera_height))
-        self.screen.blit(self.lasers_surf,laser_rect)
-        lasers_surf = self.font.render(f'{self.lasers_quiver}',False,'white')
-        laser_rect = lasers_surf.get_rect(topleft = (round(960*self.screen_width/1920),round(-10*self.screen_height/1080) + self.camera_height))
-        self.screen.blit(lasers_surf,laser_rect)
+        if(self.lasers_quiver > 0):
+
+            laser_rect = self.lasers_surf.get_rect(midtop = (round(910*self.screen_width/1920),round(10*self.screen_height/1080) + self.camera_height))
+            self.screen.blit(self.lasers_surf,laser_rect)
+            lasers_surf = self.font.render(f'{self.lasers_quiver}',False,'white')
+            laser_rect = lasers_surf.get_rect(topleft = (round(960*self.screen_width/1920),round(-10*self.screen_height/1080) + self.camera_height))
+            self.screen.blit(lasers_surf,laser_rect)
+        else:
+            laser_rect = self.no_lasers_surf.get_rect(midtop = (round(910*self.screen_width/1920),round(10*self.screen_height/1080) + self.camera_height))
+            self.screen.blit(self.no_lasers_surf,laser_rect)
+            no_lasers_surf = self.font.render(f'{self.lasers_quiver}',False,'white')
+            laser_rect = no_lasers_surf.get_rect(topleft = (round(960*self.screen_width/1920),round(-10*self.screen_height/1080) + self.camera_height))
+            self.screen.blit(no_lasers_surf,laser_rect)
         self.lasers_quiver = self.player.sprite.lasers_quiver
         
         

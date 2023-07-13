@@ -14,6 +14,8 @@ class Ammobox(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(40*self.screen_width/1920),round(40*self.screen_width/1920)))
         else:
             self.image = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(40*self.screen_height/1080),round(40*self.screen_height/1080)))
+
+            
             
         
         if self.player_user.x_pos < self.screen_width/2:
@@ -27,3 +29,5 @@ class Ammobox(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.x += 0
+
+        
