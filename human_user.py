@@ -14,7 +14,7 @@ class human_user:
         self.pull_string = False
 
         self.squat = False
-
+        self.squatChange = False
 
 
         self.camera_on = False
@@ -67,12 +67,12 @@ class human_user:
                 if results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1 and results.pose_landmarks.landmark[23].x > 0 and results.pose_landmarks.landmark[23].x < 1 and results.pose_landmarks.landmark[24].x > 0 and results.pose_landmarks.landmark[24].x < 1:
                     
                     calculated_x = self.screen_width - math.floor(((results.pose_landmarks.landmark[11].x + results.pose_landmarks.landmark[12].x + results.pose_landmarks.landmark[23].x + results.pose_landmarks.landmark[24].x)*self.screen_width/4))
-                    self.x_pos = round((calculated_x - 65*self.screen_width/1920)*self.screen_width/(self.screen_width-130*self.screen_width/1920))
+                    self.x_pos = round((calculated_x - 125*self.screen_width/1920)*self.screen_width/(self.screen_width-500*self.screen_width/1920))
                     
                     if self.x_pos < 0:
                         self.x_pos = 0
-                    elif self.x_pos > self.screen_width - round(32*self.screen_width/1920):
-                        self.x_pos = self.screen_width - round(32*self.screen_width/1920)
+                    elif self.x_pos > self.screen_width - round(40*self.screen_width/1920):
+                        self.x_pos = self.screen_width - round(40*self.screen_width/1920)
                 #else:
                     #self.x_pos = self.screen_width/2 - 16
                     
@@ -85,10 +85,19 @@ class human_user:
                     ratioright = results.pose_landmarks.landmark[24].y/results.pose_landmarks.landmark[26].y
                     ratioleft = results.pose_landmarks.landmark[23].y/results.pose_landmarks.landmark[25].y
                     if ratioright > 0.90 and ratioleft > 0.90:
+                        if self.squat == False:
+                            self.squatChange = True
+                        else:
+                            self.squatChange = False
                         self.squat = True
-                    
-                    
-
+                        
+                    else:
+                        if self.squat == True:
+                            self.squatChange = True
+                        else:
+                            self.squatChange = False
+                        self.squat = False
+                            
             
             if self.may_shoot==True:
                 self.pull_string=False

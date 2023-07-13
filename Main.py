@@ -382,7 +382,7 @@ if __name__ == '__main__':
     menu_inicial.add.button('Play', gameRun,menu_options,monitor_height,monitor_width,screen, camera_height,accept_kwargs=True)
     menu_inicial.add.button('Leaderboard', showLeaderboard)
     menu_inicial.add.button('Instructions', showInstructions)
-    menu_inicial.add.selector('Virtual Keyboard', [('OFF',False),('ON',True)],selector_id='wah', onchange=menu_options.setKeyboard)
+    #menu_inicial.add.selector('Virtual Keyboard', [('OFF',False),('ON',True)],selector_id='wah', onchange=menu_options.setKeyboard)
     menu_inicial.add.selector('Sound ', [('ON',True),('OFF',False)],onchange=menu_options.setSound)
     menu_inicial.add.selector('Camera ', [('ON',True),('OFF',False)],onchange=menu_options.setCamera)
     menu_inicial.add.button('Quit', pygame_menu.events.EXIT)

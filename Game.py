@@ -23,6 +23,7 @@ shape = [
 '  xxxxxxx',
 ' xxxxxxxxx',
 'xxxxxxxxxxx',
+'xxxxxxxxxxx',
 'xxx     xxx',
 'xx       xx']
 
@@ -58,7 +59,7 @@ class Game:
         # Ammobox setup
         # Ammobox_sprite = Ammobox(random_side,screen_height + camera_height)
         self.ammobox = pygame.sprite.GroupSingle() #Ammobox_sprite
-        self.ammobox_spawn_time = randint(100,200)
+        self.ammobox_spawn_time = randint(200,300)
         self.ammobox_exists = False
         
         if(self.difficulty == 0):
@@ -82,13 +83,13 @@ class Game:
         self.lasers_quiver = self.player.sprite.lasers_quiver
         
         if (self.screen_width/1920 < self.screen_height/1080):
-            self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(45*self.screen_width/1920),round(45*self.screen_width/1920)))
 
-            self.no_lasers_surf = pygame.transform.scale(pygame.image.load('Images/no_arrows_quiver.png').convert_alpha(),(round(45*self.screen_width/1920),round(50*self.screen_width/1920)))
+            self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(50*self.screen_width/1920),round(50*self.screen_width/1920)))
+            self.no_lasers_surf = pygame.transform.scale(pygame.image.load('Images/no_arrows_quiver.png').convert_alpha(),(round(55*self.screen_width/1920),round(55*self.screen_width/1920)))
         else:
-            self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
+            self.lasers_surf = pygame.transform.scale(pygame.image.load('Images/quiver.png').convert_alpha(),(round(50*self.screen_height/1080),round(50*self.screen_height/1080)))
+            self.no_lasers_surf = pygame.transform.scale(pygame.image.load('Images/no_arrows_quiver.png').convert_alpha(),(round(55*self.screen_height/1080),round(55*self.screen_height/1080)))
 
-            self.no_lasers_surf = pygame.transform.scale(pygame.image.load('Images/no_arrows_quiver.png').convert_alpha(),(round(45*self.screen_height/1080),round(45*self.screen_height/1080)))
             
         self.lives = 3
         
@@ -130,10 +131,10 @@ class Game:
             self.alien_lasers_speed = 8 * round(screen_width/1920)
         elif(self.difficulty == 1):
             self.alien_direction = 6*round(self.screen_width/1920)
-            self.alien_lasers_speed = 10 * round(screen_width/1920) 
+            self.alien_lasers_speed = 9 * round(screen_width/1920) 
         elif(self.difficulty == 2):
             self.alien_direction = 9*round(self.screen_width/1920) 
-            self.alien_lasers_speed = 12 * round(screen_width/1920)
+            self.alien_lasers_speed = 10 * round(screen_width/1920)
         else:
             self.alien_direction = 3*round(self.screen_width/1920)  
             self.alien_lasers_speed = 8 * round(screen_width/1920)
@@ -203,7 +204,7 @@ class Game:
         self.player_hurt.set_volume(0.3)
         
         self.dragon_sound = pygame.mixer.Sound('Sounds/dragon_death.wav')
-        self.dragon_sound.set_volume(0.3)
+        self.dragon_sound.set_volume(0.2)
 
         #If False, MUTE THE SOUND
         if(self.sound == False):
@@ -280,23 +281,29 @@ class Game:
             if alien.rect.right >= self.screen_width:
                 if(self.difficulty == 0):
                     self.alien_direction = -3*round(self.screen_width/1920)
+                    self.alien_move_down(round(4*self.screen_height/1080))
                 elif(self.difficulty == 1):
                     self.alien_direction = -6*round(self.screen_width/1920)
+                    self.alien_move_down(round(5*self.screen_height/1080))
                 elif(self.difficulty == 2):
-                    self.alien_direction = -9*round(self.screen_width/1920)
+                    self.alien_direction = -8*round(self.screen_width/1920)
+                    self.alien_move_down(round(4*self.screen_height/1080))
                 else:
                     self.alien_direction = -1
-                self.alien_move_down(round(4*self.screen_height/1080))
+                    self.alien_move_down(round(4*self.screen_height/1080))
             elif alien.rect.left <= 0:
                 if(self.difficulty == 0):
                     self.alien_direction = 3*round(self.screen_width/1920)
+                    self.alien_move_down(round(5*self.screen_height/1080))
                 elif(self.difficulty == 1):
                     self.alien_direction = 6*round(self.screen_width/1920)
+                    self.alien_move_down(round(4*self.screen_height/1080))
                 elif(self.difficulty == 2):
-                    self.alien_direction = 9*round(self.screen_width/1920)
+                    self.alien_direction = 8*round(self.screen_width/1920)
+                    self.alien_move_down(round(4*self.screen_height/1080))
                 else:
                     self.alien_direction = 1
-                self.alien_move_down(round(4*self.screen_height/1080))
+                    self.alien_move_down(round(4*self.screen_height/1080))
 
     def alien_move_down(self,distance):
         if self.aliens:
@@ -368,7 +375,7 @@ class Game:
         self.ammobox_spawn_time -= 1
         if self.ammobox_spawn_time <= 0 and not self.won:
             self.ammobox.add(Ammobox(round(0.98*self.screen_height + self.camera_height),self.screen_width,self.camera_height,self.screen_height, self.player_user))
-            self.ammobox_spawn_time = randint(800,1300)
+            self.ammobox_spawn_time = randint(700,1000)
             
             self.ammobox_exists = True
             
@@ -380,9 +387,9 @@ class Game:
                 if(self.difficulty == 0):
                     self.ammobox_timeout = 450
                 elif(self.difficulty == 1):
-                    self.ammobox_timeout = 300
+                    self.ammobox_timeout = 225
                 elif(self.difficulty == 2):
-                    self.ammobox_timeout = 150
+                    self.ammobox_timeout = 125
                 else:
                     self.ammobox_timeout = 450
                     
@@ -409,15 +416,15 @@ class Game:
 
                             Rnum = randint(0,100)
                             if(self.difficulty == 0):
-                                if Rnum <= 5:
+                                if Rnum <= 12:
                                     powerup = Powerups(alien.rect.center,5,self.screen_height, self.screen_width, self.camera_height)
                                     self.powerups.add(powerup)
                             if(self.difficulty == 1):
-                                if Rnum <= 5:
+                                if Rnum <= 7:
                                     powerup = Powerups(alien.rect.center,5,self.screen_height, self.screen_width, self.camera_height)
                                     self.powerups.add(powerup)
                             if(self.difficulty == 3):
-                                if Rnum <= 2:
+                                if Rnum <= 5:
                                     powerup = Powerups(alien.rect.center,5,self.screen_height, self.screen_width, self.camera_height)
                                     self.powerups.add(powerup)
 
@@ -467,20 +474,28 @@ class Game:
                         self.eat_sound.play()
                         if self.lives < 5:
                             self.lives +=1
+                        elif self.lives >= 5:
+                            self.score += 300
                             
                     elif(powerup.name == "plus_1_arrow"):
                         powerup.kill()
                         self.drink_sound.play()
                         if(self.player.sprite.number_lasers < 3):
                             self.player.sprite.number_lasers += 1
+                        elif (self.player.sprite.number_lasers >= 3):
+                            self.score += 300
                             
                             
                     elif(powerup.name == "slow_alien_lasers"):
                         powerup.kill()
                         self.drink_sound.play()
-                        if(self.alien_lasers_speed > 2):
+                        if(self.alien_lasers_speed > 5*self.screen_height/1080):
                             self.alien_lasers_speed -=2*self.screen_height/1080
-                            Thread(target = self.alien_laser_speed_timer).start()
+                            #Thread(target = self.alien_laser_speed_timer).start()
+                        else:
+                            #self.alien_lasers_speed = 4
+                            self.score += 300
+                            #Thread(target = self.alien_laser_speed_timer).start()
         # ammo
         if(self.ammobox):
             for box in self.ammobox:
@@ -592,9 +607,9 @@ class Game:
                 for alien in self.aliens:
                     alien.kill()
     
-    def alien_laser_speed_timer(self):
-        time.sleep(5)
-        self.alien_lasers_speed +=2*self.screen_height/1080
+    # def alien_laser_speed_timer(self):
+    #     time.sleep(10)
+    #     self.alien_lasers_speed +=2*self.screen_height/1080
     
     
     def run(self, user):
