@@ -27,8 +27,11 @@ class Player(pygame.sprite.Sprite):
         self.lasers = pygame.sprite.Group()
         self.laser_sound = pygame.mixer.Sound('Sounds/bow.wav')
         self.laser_sound.set_volume(0.2)
+
         self.no_laser_sound = pygame.mixer.Sound('Sounds/no_arrows.wav')
         self.no_laser_sound.set_volume(0.4)
+        self.tick_start = 0
+        
     def get_input(self):
         keys = pygame.key.get_pressed()
 
@@ -47,14 +50,22 @@ class Player(pygame.sprite.Sprite):
             self.laser_time = pygame.time.get_ticks()
             self.laser_sound.play()
           else:
-              self.no_laser_sound.play()
-        if user.squat==True:
-            if (pygame.time.get_ticks())%30 == 0:
-                self.lasers_quiver = self.lasers_quiver + 3
-                #print("Fez o Squat")
-                #print(self.lasers_quiver)
-                user.squat = False
 
+            self.no_laser_sound.play()
+            
+        if user.squat == True:
+            if user.squatChange == True:
+                self.tick_start = pygame.time.get_ticks()
+                self.lasers_quiver = self.lasers_quiver + 3
+                print("Fez o Squat")
+                
+            if (pygame.time.get_ticks()-self.tick_start)>30*30:
+                self.tick_start = pygame.time.get_ticks()
+                self.lasers_quiver = self.lasers_quiver + 3
+                print("Continua o Squat")
+                #print(self.lasers_quiver)
+                #user.squat = False
+            
     def recharge(self):
         if not self.ready:
             current_time = pygame.time.get_ticks()
