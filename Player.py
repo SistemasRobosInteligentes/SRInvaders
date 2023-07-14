@@ -11,6 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.screen_height = screen_height
         self.screen_width = screen_width
         self.camera_height = camera_height
+        self.already_shot = False
         
         if (self.screen_width/1920 < self.screen_height/1080):
             self.image = pygame.transform.scale(pygame.image.load('Images/player.png').convert_alpha(),(round(45*self.screen_width/1920),round(45*self.screen_width/1920)))
@@ -42,16 +43,20 @@ class Player(pygame.sprite.Sprite):
 
     
     def handle_lasers(self, user):
-        if self.ready and user.may_shoot and user.pull_string==True:
-          if self.lasers_quiver > 0:                            #Testing max Ammo
+        if self.ready and user.may_shoot:# and user.pull_string==True:
+          if self.lasers_quiver > 0 and self.already_shot == False:                            #Testing max Ammo
             self.shoot_laser()
             self.lasers_quiver = self.lasers_quiver - 1          #Ammo Going Down
             self.ready = False
             self.laser_time = pygame.time.get_ticks()
             self.laser_sound.play()
-          else:
+            self.already_shot = True
+          elif self.already_shot == False:
 
             self.no_laser_sound.play()
+            self.already_shot = True
+        else:
+            self.already_shot = False
             
         if user.squat == True:
             if user.squatChange == True:
@@ -67,10 +72,11 @@ class Player(pygame.sprite.Sprite):
                 #user.squat = False
             
     def recharge(self):
-        if not self.ready:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.laser_time >= self.laser_cooldown:
-                self.ready = True
+        self.ready = True
+        # if not self.ready:
+        #     current_time = pygame.time.get_ticks()
+        #     if current_time - self.laser_time >= self.laser_cooldown:
+        #         self.ready = True
 
     def constraint(self):
         if self.rect.left <= 0:

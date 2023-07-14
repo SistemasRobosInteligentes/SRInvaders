@@ -99,16 +99,17 @@ class human_user:
                         self.squat = False
                             
             
-            if self.may_shoot==True:
-                self.pull_string=False
+            # if self.may_shoot==True:
+            #     self.pull_string=False
                 
             try:
                 if (results.pose_landmarks.landmark[20].y > 0 and results.pose_landmarks.landmark[20].y < 1 and results.pose_landmarks.landmark[20].x > 0 and results.pose_landmarks.landmark[20].x < 1 and results.pose_landmarks.landmark[12].x > 0 and results.pose_landmarks.landmark[12].x < 1 and results.pose_landmarks.landmark[12].y > 0 and results.pose_landmarks.landmark[12].y < 1) or (results.pose_landmarks.landmark[19].y > 0 and results.pose_landmarks.landmark[19].y < 1 and results.pose_landmarks.landmark[19].x > 0 and results.pose_landmarks.landmark[19].x < 1  and results.pose_landmarks.landmark[11].x > 0 and results.pose_landmarks.landmark[11].x < 1 and results.pose_landmarks.landmark[11].y > 0 and results.pose_landmarks.landmark[11].y < 1):
                   if results.pose_landmarks.landmark[20].y > results.pose_landmarks.landmark[12].y and results.pose_landmarks.landmark[19].y > results.pose_landmarks.landmark[11].y:  
                       self.pull_string = True
                       
-                  if results.pose_landmarks.landmark[20].y < results.pose_landmarks.landmark[12].y and self.pull_string == True or results.pose_landmarks.landmark[19].y < results.pose_landmarks.landmark[11].y and self.pull_string == True:
+                  if (results.pose_landmarks.landmark[20].y < results.pose_landmarks.landmark[12].y and self.pull_string == True) or (results.pose_landmarks.landmark[19].y < results.pose_landmarks.landmark[11].y and self.pull_string == True):
                         self.may_shoot = True
+                        self.pull_string=False
                         #print((results.pose_landmarks.landmark[24].y)/(results.pose_landmarks.landmark[26].y)) 
                   else:
                             self.may_shoot = False
